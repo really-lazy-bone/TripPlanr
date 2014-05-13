@@ -37,6 +37,7 @@
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="38dp"
+        android:drawableLeft="@drawable/icon_save"
         android:text="Create Plan" />
 
 </LinearLayout>
