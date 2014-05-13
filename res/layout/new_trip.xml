@@ -29,8 +29,8 @@
         android:hint="New Location" />
 
     <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
+        android:id="@+id/planets_spinner"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <Button
