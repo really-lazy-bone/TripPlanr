@@ -2,7 +2,7 @@ package com.lazybone.trips.model;
 
 public class Route {
 
-	private Trip trip;
+	private Trip trip;	// many to one
 	private Location fromLocation;
 	private Location toLocation;
 	private String travelMethod;
