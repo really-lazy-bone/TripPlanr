@@ -9,5 +9,20 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="trip_name_hint">Name of Trip</string>
+    <string name="new_location_hint">New Location</string>
+    <string name="add_location_hint">Add Location</string>
+    <string name="create_plan_hint">Create Plan</string>
+    <string name="travel_method_text">Default Traveling Method</string>
+    
+    <string name="travel_method_prompt">Select Default Travle Method</string>
+ 
+    <string-array name="travel_arrays">
+        <item>Driving</item>
+        <item>Public Transport</item>
+        <item>Biking</item>
+        <item>Walking</item>
+    </string-array>
 
 </resources>

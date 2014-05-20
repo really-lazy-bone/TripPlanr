@@ -202,6 +202,7 @@ public class NavigationDrawerFragment extends Fragment {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
         
+        // this is where we update the fragment
         if (position == 0) {
         	FragmentManager fragmentManager = getFragmentManager();
         	fragmentManager.beginTransaction().replace(R.id.container, new New_Trip_Fragment()).commit();
