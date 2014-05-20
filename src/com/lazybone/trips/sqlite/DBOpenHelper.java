@@ -10,8 +10,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String TRIP_NAME = "name";
 	final static String _ID = "_id";
 	
-	
-	
 	final static String TRIP_TIME = "startTime";
 	//final static String TRIP_LOCATIONS = "locations";
 	final static String TRIP_METHOD = "defaultTravelMethod";
@@ -27,7 +25,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String LOCATION_NAME = "name";
 	final static String LOCATION_TYPE = "type";
 	final static String LOCATION_NOTES = "notes";
-	final static String[] location_columns = { _ID, LOCATION_ADDRESS };
+	public final static String[] location_columns = { _ID, LOCATION_ADDRESS };
 	
 	
 	final static String TABLE_ROUTES = "Routes";

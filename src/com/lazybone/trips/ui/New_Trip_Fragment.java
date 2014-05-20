@@ -3,9 +3,12 @@ package com.lazybone.trips.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lazybone.trips.sqlite.DBOpenHelper;
+import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
 
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class New_Trip_Fragment extends Fragment {
 
 	List<String> locations = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
+	private SimpleCursorAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,15 +42,15 @@ public class New_Trip_Fragment extends Fragment {
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
 
-		// dummy list of location
-		locations.add("Hello");
-		locations.add("World");
+		DatabaseAccessObject dao = new DatabaseAccessObject(getActivity());
 
-		adapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.location_row, R.id.location_label,
-				locations);
+		Cursor c = dao.readAddress();
+		
+		mAdapter = new SimpleCursorAdapter(getActivity(),
+				R.layout.location_row, c, DBOpenHelper.location_columns,
+				new int[] { R.id.location_id, R.id.location_label }, 0);
 
-		listLocationView.setAdapter(adapter);
+		listLocationView.setAdapter(mAdapter);
 
 		Button addLocationButton = (Button) rootView
 				.findViewById(R.id.add_location);

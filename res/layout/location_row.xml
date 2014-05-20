@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
+    
+    <TextView
+        android:id="@+id/location_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 
     <TextView
         android:drawableLeft="@drawable/icon_map_marker"

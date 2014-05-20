@@ -1,26 +1,15 @@
 package com.lazybone.trips.sqlite;
 
-
-
-import java.util.ArrayList;
-
-import com.lazybone.trips.R;
-
-import android.app.ListActivity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
+import android.util.Log;
 
-public class MainActivity extends ListActivity {
+public class DatabaseAccessObject {
 
 	private SQLiteDatabase mDB = null;
 	private DBOpenHelper mDbHelper;
-	private SimpleCursorAdapter mAdapter;
 	
 	private String NTRIP_NAME = "test01";
 	private Integer NTRIP_TIME = 1000;
@@ -38,54 +27,19 @@ public class MainActivity extends ListActivity {
 	private String NROUTE_METHOD = "driving";
 	
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_main);
-
+	public DatabaseAccessObject(Context activity) {
 		// Create a new DatabaseHelper
-		mDbHelper = new DBOpenHelper(this);
+		mDbHelper = new DBOpenHelper(activity);
 
 		// Get the underlying database for writing
 		mDB = mDbHelper.getWritableDatabase();
-
-		// start with an empty database
-		clearAll();
-
-		// Insert records
+		
 		insertTrips();
 		insertLocations();
 		insertRoutes();
 		insertManyToMany();
-
-		// Create a cursor
-		Cursor c = readAddress();
-		mAdapter = new SimpleCursorAdapter(this, R.layout.list_layout, c,
-				DBOpenHelper.location_columns, new int[] { R.id._id, R.id.name },
-				0);
-
-		setListAdapter(mAdapter);
-
-		//Button fixButton = (Button) findViewById(R.id.fix_button);
-		/*fixButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				// execute database operations
-				fix();
-
-				// Redisplay data
-				mAdapter.getCursor().requery();
-				mAdapter.notifyDataSetChanged();
-			}
-		});*/
-		
-		clearAll();
-
 	}
-
+	
 	// Insert several artist records
 	private void insertTrips() {
 
@@ -133,9 +87,12 @@ public class MainActivity extends ListActivity {
 	}
 
 	// Returns all artist records in the database
-	private Cursor readAddress() {
+	public Cursor readAddress() {
 		
 		// public Cursor query (String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) 
+		
+		Log.i("TEST", 	DBOpenHelper.location_columns[0]);
+		Log.i("TEST", 	DBOpenHelper.location_columns[1]);
 		
 		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
 				DBOpenHelper.location_columns, null, new String[] {}, null, null,
@@ -170,14 +127,10 @@ public class MainActivity extends ListActivity {
 
 	}
 
-	// Close database
-	@Override
 	protected void onDestroy() {
 
 		mDB.close();
 		mDbHelper.deleteDatabase();
-
-		super.onDestroy();
 
 	}
 }
