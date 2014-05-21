@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class DatabaseAccessObject {
 
@@ -15,7 +14,6 @@ public class DatabaseAccessObject {
 	private Integer NTRIP_TIME = 1000;
 	private String NTRIP_METHOD = "bike";
 	
-	private String NLOCATION_ADDRESS = "5151 State University Dr, Los Angeles, CA 90032";
 	private String NLOCATION_NAME = "Cal State LA";
 	private String NLOCATION_TYPE = "school";
 	private String NLOCATION_NOTES = "test notes";
@@ -33,14 +31,8 @@ public class DatabaseAccessObject {
 
 		// Get the underlying database for writing
 		mDB = mDbHelper.getWritableDatabase();
-		
-		insertTrips();
-		insertLocations();
-		insertRoutes();
-		insertManyToMany();
 	}
 	
-	// Insert several artist records
 	private void insertTrips() {
 
 		ContentValues values = new ContentValues();
@@ -52,16 +44,20 @@ public class DatabaseAccessObject {
 
 	}
 	
-	private void insertLocations() {
+	public void insertLocations(String location) {
 
 		ContentValues values = new ContentValues();
 		
-		values.put(DBOpenHelper.LOCATION_ADDRESS, NLOCATION_ADDRESS);
+		values.put(DBOpenHelper.LOCATION_ADDRESS, location);
 		values.put(DBOpenHelper.LOCATION_NAME, NLOCATION_NAME);
 		values.put(DBOpenHelper.LOCATION_TYPE, NLOCATION_TYPE);
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
 		mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);
 
+	}
+	
+	public void deleteLocation(int id) {
+		mDB.delete(DBOpenHelper.TABLE_LOCATIONS, "_id=?", new String[] {"" + id});
 	}
 	
 	private void insertRoutes(){
@@ -91,34 +87,13 @@ public class DatabaseAccessObject {
 		
 		// public Cursor query (String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) 
 		
-		Log.i("TEST", 	DBOpenHelper.location_columns[0]);
-		Log.i("TEST", 	DBOpenHelper.location_columns[1]);
-		
 		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
 				DBOpenHelper.location_columns, null, new String[] {}, null, null,
 				null);
 	}
 
-	// Modify the contents of the database
-	/*private void fix() {
-
-		// Sorry Lady Gaga :-(
-		mDB.delete(DatabaseOpenHelper.TABLE_NAME,
-				DatabaseOpenHelper.ARTIST_NAME + "=?",
-				new String[] { "Lady Gaga" });
-
-		// fix the Man in Black
-		ContentValues values = new ContentValues();
-		values.put(DatabaseOpenHelper.ARTIST_NAME, "Johnny Cash");
-
-		mDB.update(DatabaseOpenHelper.TABLE_NAME, values,
-				DatabaseOpenHelper.ARTIST_NAME + "=?",
-				new String[] { "Jawny Cash" });
-
-	}*/
-
 	// Delete all records
-	private void clearAll() {
+	public void clearAll() {
 
 		mDB.delete(DBOpenHelper.TABLE_TRIPS, null, null);
 		mDB.delete(DBOpenHelper.TABLE_LOCATIONS, null, null);

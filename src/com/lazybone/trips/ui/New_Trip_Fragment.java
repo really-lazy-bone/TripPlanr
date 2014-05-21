@@ -1,8 +1,5 @@
 package com.lazybone.trips.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lazybone.trips.sqlite.DBOpenHelper;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
@@ -13,7 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,14 +20,18 @@ import android.widget.Toast;
 
 public class New_Trip_Fragment extends Fragment {
 
-	List<String> locations = new ArrayList<String>();
-	ArrayAdapter<String> adapter;
 	private SimpleCursorAdapter mAdapter;
+	private Cursor c;
+	private DatabaseAccessObject dao;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		dao = new DatabaseAccessObject(getActivity());
+		
+		c = dao.readAddress();
+		
 		setRetainInstance(true);
 	}
 
@@ -41,10 +43,6 @@ public class New_Trip_Fragment extends Fragment {
 
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
-
-		DatabaseAccessObject dao = new DatabaseAccessObject(getActivity());
-
-		Cursor c = dao.readAddress();
 		
 		mAdapter = new SimpleCursorAdapter(getActivity(),
 				R.layout.location_row, c, DBOpenHelper.location_columns,
@@ -54,6 +52,22 @@ public class New_Trip_Fragment extends Fragment {
 
 		Button addLocationButton = (Button) rootView
 				.findViewById(R.id.add_location);
+		
+		listLocationView.setOnItemClickListener(new OnItemClickListener(){
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				Toast.makeText(getActivity(), "Item click " + position, Toast.LENGTH_LONG).show();
+				
+				c.moveToPosition(position);
+				
+				int location_id = c.getInt(0);
+				
+				dao.deleteLocation(location_id);
+				
+				mAdapter.getCursor().requery();
+				mAdapter.notifyDataSetChanged();
+			}
+		});
 
 		addLocationButton.setOnClickListener(new View.OnClickListener() {
 
@@ -75,6 +89,9 @@ public class New_Trip_Fragment extends Fragment {
 		Toast.makeText(getActivity(), "Adding New Location " + locationName,
 				Toast.LENGTH_LONG).show();
 
-		adapter.add(locationName);
+		dao.insertLocations(locationName);
+		
+		mAdapter.getCursor().requery();
+		mAdapter.notifyDataSetChanged();
 	}
 }
