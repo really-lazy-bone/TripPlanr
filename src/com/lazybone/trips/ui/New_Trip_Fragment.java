@@ -46,7 +46,7 @@ public class New_Trip_Fragment extends Fragment {
 		
 		mAdapter = new SimpleCursorAdapter(getActivity(),
 				R.layout.location_row, c, DBOpenHelper.location_columns,
-				new int[] { R.id.location_id, R.id.location_label }, 0);
+				new int[] { 0, R.id.location_id, R.id.location_label }, 0);
 
 		listLocationView.setAdapter(mAdapter);
 
