@@ -25,7 +25,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String LOCATION_NAME = "name";
 	final static String LOCATION_TYPE = "type";
 	final static String LOCATION_NOTES = "notes";
-	public final static String[] location_columns = { _ID, LOCATION_ADDRESS };
+	final static String LOCATION_LAT = "lat";
+	final static String LOCATION_LON = "lon";
+	public final static String[] location_columns = { LOCATION_NAME, LOCATION_ADDRESS };
 	
 	
 	final static String TABLE_ROUTES = "Routes";
@@ -59,7 +61,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 					+ LOCATION_ADDRESS + " TEXT NOT NULL, "
 					+ LOCATION_NAME + " TEXT, "
 					+ LOCATION_TYPE + " TEXT, " 
-					+ LOCATION_NOTES + " TEXT"
+					+ LOCATION_NOTES + " TEXT, "
+					+ LOCATION_LAT + " REAL,"
+					+ LOCATION_LON + " REAL"
 					
 					+")";
 	

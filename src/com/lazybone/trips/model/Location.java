@@ -6,6 +6,8 @@ public class Location {
 	private String name;
 	private String type;
 	private String notes;
+	private double lon;
+	private double lat;
 	
 	public String getAddress() {
 		return address;
@@ -31,6 +33,17 @@ public class Location {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	
+	public double getLon() {
+		return lon;
+	}
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+	public double getLat() {
+		return lat;
+	}
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
 	
 }
