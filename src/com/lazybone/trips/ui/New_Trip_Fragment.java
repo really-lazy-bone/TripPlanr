@@ -56,8 +56,6 @@ public class New_Trip_Fragment extends Fragment {
 		listLocationView.setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				
-				Toast.makeText(getActivity(), "Item click " + position, Toast.LENGTH_LONG).show();
-				
 				c.moveToPosition(position);
 				
 				int location_id = c.getInt(0);

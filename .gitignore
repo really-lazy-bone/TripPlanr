@@ -24,6 +24,5 @@ proguard/
 
 # Eclipse stuff
 .classpath
-.project
 proguard-project.txt
 project.properties
