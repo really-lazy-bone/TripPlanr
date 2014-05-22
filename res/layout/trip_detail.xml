@@ -17,6 +17,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="@string/trip_name_hint"
+            android:textSize="24sp"
             android:singleLine="true" >
         </TextView>
 
