@@ -14,7 +14,6 @@ public class DatabaseAccessObject {
 	private Integer NTRIP_TIME = 1000;
 	private String NTRIP_METHOD = "bike";
 	
-	private String NLOCATION_NAME = "Cal State LA";
 	private String NLOCATION_TYPE = "school";
 	private String NLOCATION_NOTES = "test notes";
 	
@@ -33,19 +32,16 @@ public class DatabaseAccessObject {
 		mDB = mDbHelper.getWritableDatabase();
 	}
 	
-	private void insertTrips() {
-
+	public void insertTrips(String tripName, String tripMethod) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBOpenHelper.TRIP_NAME, NTRIP_NAME);
 		values.put(DBOpenHelper.TRIP_TIME, NTRIP_TIME);
 		values.put(DBOpenHelper.TRIP_METHOD,NTRIP_METHOD);
 		mDB.insert(DBOpenHelper.TABLE_TRIPS, null, values);
-
 	}
 	
 	public void insertLocations(String location, String name, double lat, double lon) {
-
 		ContentValues values = new ContentValues();
 		
 		values.put(DBOpenHelper.LOCATION_ADDRESS, location);
@@ -54,13 +50,13 @@ public class DatabaseAccessObject {
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
 		
 		mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);
-
 	}
 	
 	public void deleteLocation(int id) {
 		mDB.delete(DBOpenHelper.TABLE_LOCATIONS, "_id=?", new String[] {"" + id});
 	}
 	
+	@SuppressWarnings("unused")
 	private void insertRoutes(){
 		ContentValues values = new ContentValues();
 
@@ -70,9 +66,9 @@ public class DatabaseAccessObject {
 		values.put(DBOpenHelper.ROUTE_METHOD, NROUTE_METHOD);
 		
 		mDB.insert(DBOpenHelper.TABLE_ROUTES, null, values);
-
 	}
 	
+	@SuppressWarnings("unused")
 	private void insertManyToMany() {
 		ContentValues values = new ContentValues();
 		
@@ -80,7 +76,6 @@ public class DatabaseAccessObject {
 		values.put(DBOpenHelper.LOCATION_ID, NLOCATION_ID);
 		
 		mDB.insert(DBOpenHelper.TABLE_MANY_TO_MANY, null, values);
-		
 	}
 
 	// Returns all artist records in the database
