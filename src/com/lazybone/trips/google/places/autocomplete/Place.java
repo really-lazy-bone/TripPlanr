@@ -4,23 +4,21 @@ import java.util.ArrayList;
 
 public class Place {
 
-	
 	private ArrayList<String> types;
-	
+
 	private String description;
 	private ArrayList<String> terms;
 	private String reference;
-	
-	//only use when place is not an establishment
-	private String name;
-	
-	//retriebed from places detail api call
-	private String formattedAddress;
 
+	// only use when place is not an establishment
+	private String name;
+
+	// retriebed from places detail api call
+	private String formattedAddress;
 
 	private double lat;
 	private double lng;
-	
+
 	public Place(String description, String reference) {
 		this.description = description;
 		this.reference = reference;
@@ -67,6 +65,7 @@ public class Place {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getFormattedAddress() {
 		return formattedAddress;
 	}
@@ -90,5 +89,5 @@ public class Place {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	
+
 }
