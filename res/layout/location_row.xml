@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
     <ImageView
@@ -8,8 +8,8 @@
         android:id="@+id/location_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="left"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_vertical|left"
         android:src="@drawable/icon_map_marker" >
     </ImageView>
 
@@ -22,7 +22,9 @@
         <TextView
             android:id="@+id/location_id"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold" >
         </TextView>
 
         <TextView
@@ -30,7 +32,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@+id/label"
-            android:textSize="20sp" >
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/lightgrey" >
         </TextView>
     </LinearLayout>
 
