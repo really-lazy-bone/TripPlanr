@@ -19,7 +19,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +50,6 @@ public class New_Location_Fragment extends Fragment {
 	private static final String TYPE_DETAIL = "/details";
 	private static final String OUT_JSON = "/json";
 
-	private Cursor c;
 	private DatabaseAccessObject dao;
 	private AutoCompleteTextView autoCompView;
 	private Button confirmAddLocation;
@@ -63,7 +61,7 @@ public class New_Location_Fragment extends Fragment {
 
 		dao = new DatabaseAccessObject(getActivity());
 
-		c = dao.readAddress();
+		dao.readAddress();
 
 		setRetainInstance(true);
 	}
@@ -92,10 +90,8 @@ public class New_Location_Fragment extends Fragment {
 					new PlacesDetailTask().execute(url);
 
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -139,10 +135,8 @@ public class New_Location_Fragment extends Fragment {
 						urlConnection.getInputStream());
 				return new JSONObject(getResponseText(in));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				urlConnection.disconnect();
@@ -253,6 +247,7 @@ public class New_Location_Fragment extends Fragment {
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private static String getResponseText(InputStream inStream) {
 		// very nice trick from
 		// http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
