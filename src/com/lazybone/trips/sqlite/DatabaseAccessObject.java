@@ -90,19 +90,15 @@ public class DatabaseAccessObject {
 
 	// Delete all records
 	public void clearAll() {
-
 		mDB.delete(DBOpenHelper.TABLE_TRIPS, null, null);
 		mDB.delete(DBOpenHelper.TABLE_LOCATIONS, null, null);
 		mDB.delete(DBOpenHelper.TABLE_ROUTES, null, null);
 		mDB.delete(DBOpenHelper.TABLE_MANY_TO_MANY, null, null);
-
 	}
 
 	protected void onDestroy() {
-
 		mDB.close();
 		mDbHelper.deleteDatabase();
-
 	}
 }
 
