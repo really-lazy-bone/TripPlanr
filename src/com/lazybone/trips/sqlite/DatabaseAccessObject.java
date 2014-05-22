@@ -106,16 +106,18 @@ public class DatabaseAccessObject {
 	public Cursor readAddress(long tripId) {
 		
 		Cursor c = mDB.query(DBOpenHelper.TABLE_MANY_TO_MANY,
-				DBOpenHelper.location_ids, DBOpenHelper.TRIP_ID+"=?", new String[] {tripId + ""}, null,
+				new String[] {
+				DBOpenHelper._ID,DBOpenHelper.LOCATION_ID}, DBOpenHelper.TRIP_ID + "=?", new String[] {tripId + ""}, null,
 				null, null);
 		String[] location_ids = new String[]{};
 		int i = 0;
 		while(c.moveToNext()){
 			location_ids[i] = c.getString(1);
+			i++;
 		}
 		
 		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
-				DBOpenHelper.location_columns, DBOpenHelper.LOCATION_ID, location_ids, null,
+				DBOpenHelper.location_columns, DBOpenHelper.LOCATION_ID + "=?", location_ids, null,
 				null, null);
 	}
 	

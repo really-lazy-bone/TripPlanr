@@ -19,8 +19,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String TABLE_MANY_TO_MANY = "tl";
 	final static String TRIP_ID = "trip_id";
 	final static String LOCATION_ID = "location_id";
-	public final static String[] location_ids = { _ID, LOCATION_ID,
-		};
+	
 
 	final static String TABLE_LOCATIONS = "Locations";
 	final static String LOCATION_ADDRESS = "address";
