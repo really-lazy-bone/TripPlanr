@@ -1,6 +1,7 @@
 package com.lazybone.trips.ui;
 
 import java.util.ArrayList;
+import com.tripplanr.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -12,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.view.MotionEvent;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
-import com.tripplanr.R;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
