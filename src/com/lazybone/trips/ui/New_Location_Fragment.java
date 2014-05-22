@@ -74,6 +74,8 @@ public class New_Location_Fragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.new_location,
 				container, false);
+		
+		getActivity().getActionBar().setTitle("Add New Location");
 
 		confirmAddLocation = (Button) rootView
 				.findViewById(R.id.confirm_add_location);
