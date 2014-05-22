@@ -1,16 +1,13 @@
 package com.lazybone.trips.ui;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -44,11 +41,7 @@ public class Trip_Detail_Fragment extends Fragment {
 		
 		long tripId = this.getArguments().getLong("tripId");
 		
-		Log.i("TEST", "" + tripId);
-		
 		Cursor tripCursor = dao.readTrip(tripId);
-		
-		Log.i("TEST", "" + tripCursor.getColumnCount());
 		
 		tripCursor.moveToFirst();
 		String tripName = tripCursor.getString(1);
@@ -66,18 +59,9 @@ public class Trip_Detail_Fragment extends Fragment {
 		listLocationView.setAdapter(mAdapter);
 
 		listLocationView.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("deprecation")
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				c.moveToPosition(position);
-
-				int location_id = c.getInt(0);
-
-				dao.deleteLocation(location_id);
-
-				mAdapter.getCursor().requery();
-				mAdapter.notifyDataSetChanged();
 			}
 		});
 

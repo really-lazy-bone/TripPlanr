@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
 	
 	final static String TABLE_TRIPS = "Trips";
-	final static String TRIP_NAME = "name";
-	final static String _ID = "_id";
+	public final static String TRIP_NAME = "name";
+	public final static String _ID = "_id";
 	
 	final static String TRIP_TIME = "startTime";
 	//final static String TRIP_LOCATIONS = "locations";

@@ -103,13 +103,16 @@ public class DatabaseAccessObject {
 
 	public Cursor readTrip(long tripId) {
 
-		// public Cursor query (String table, String[] columns, String
-		// selection, String[] selectionArgs, String groupBy, String having,
-		// String orderBy)
-
 		return mDB.query(DBOpenHelper.TABLE_TRIPS, new String[] {
 				DBOpenHelper._ID, DBOpenHelper.TRIP_NAME }, "_id=?",
 				new String[] { "" + tripId }, null, null, null);
+	}
+
+	public Cursor readTrips() {
+
+		return mDB.query(DBOpenHelper.TABLE_TRIPS, new String[] {
+				DBOpenHelper._ID, DBOpenHelper.TRIP_NAME }, null,
+				new String[] {}, null, null, null);
 	}
 
 	// Delete all records
