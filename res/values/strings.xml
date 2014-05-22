@@ -16,6 +16,8 @@
     <string name="create_plan_hint">Create Plan</string>
     <string name="travel_method_text">Default Traveling Method</string>
     
+    <string name="location_icon_content">Location Icon</string>
+    
     <string name="travel_method_prompt">Select Default Travle Method</string>
  
     <string-array name="travel_arrays">

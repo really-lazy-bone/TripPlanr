@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
     <ImageView
-        android:contentDescription="@string/location_icon_content"
-        android:id="@+id/location_icon"
+        android:id="@+id/trip_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_gravity="left"
-        android:src="@drawable/icon_map_marker" >
+        android:layout_gravity="center_vertical|left"
+        android:src="@drawable/icon_tag" >
     </ImageView>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/location_id"
+            android:id="@+id/trip_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
         </TextView>
 
         <TextView
-            android:id="@+id/location_label"
+            android:id="@+id/trip_summary"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@+id/label"
             android:textSize="20sp" >
         </TextView>
     </LinearLayout>
