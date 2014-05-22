@@ -1,5 +1,6 @@
 package com.lazybone.trips.google.places.autocomplete;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -27,7 +28,7 @@ public class AutoComplete {
 		ArrayList<Place> resultList = null;
 
 		HttpURLConnection conn = null;
-		StringBuilder jsonResults = new StringBuilder();
+		StringBuilder response = new StringBuilder();
 		try {
 			StringBuilder sb = new StringBuilder(PLACES_API_BASE
 					+ TYPE_AUTOCOMPLETE + OUT_JSON);
@@ -39,14 +40,14 @@ public class AutoComplete {
 					+ URLEncoder.encode(sb.toString(), "utf8"));
 
 			conn = (HttpURLConnection) url.openConnection();
-			InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
-			// Load the results into a StringBuilder
-			int read;
-			char[] buff = new char[1024];
-			while ((read = in.read(buff)) != -1) {
-				jsonResults.append(buff, 0, read);
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(conn.getInputStream(), "ISO-8859-15"));
+			String inputLine;
+ 
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
 			}
+			in.close();
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG,
 					"Error processing AWS Google proxy Service response", e);
@@ -61,13 +62,16 @@ public class AutoComplete {
 		}
 
 		try {
+			Log.d("response", response.toString());
 			// Create a JSON object hierarchy from the results
-			JSONObject jsonObj = new JSONObject(jsonResults.toString());
+			JSONObject jsonObj = new JSONObject(response.toString());
 			JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
 			// Extract the Place descriptions from the results
 			resultList = new ArrayList<Place>(predsJsonArray.length());
 			for (int i = 0; i < predsJsonArray.length(); i++) {
+				
+				
 				Place placeToAdd = new Place(predsJsonArray.getJSONObject(i)
 						.getString("description"), predsJsonArray
 						.getJSONObject(i).getString("reference"));
