@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="action_bar_background">#FF9933</color>
+    <color name="action_bar_background_start">#FFD494</color>
+    <color name="action_bar_background_end">#DBA901</color>
+
     <color name="main_background">#FFD494</color>
     <color name="lightorange">#FFD494</color>
     <color name="lightgrey">#999999</color>
