@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+     
+
+        <AutoCompleteTextView
+            android:id="@+id/new_location_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_locate"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="@string/new_location_hint"
+            android:inputType="text"
+            android:dropDownHeight="250dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/confirm_add_location"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:drawableLeft="@drawable/icon_plus"
+            android:drawablePadding="10dp"
+            android:gravity="left"
+            android:text="@string/add_location_hint" />
+    </LinearLayout>
+
+</ScrollView>

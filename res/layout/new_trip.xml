@@ -28,17 +28,7 @@
             android:layout_marginLeft="10dp" >
         </ListView>
 
-        <EditText
-            android:id="@+id/new_location_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_locate"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="@string/new_location_hint"
-            android:inputType="text"
-            android:singleLine="true" />
-
+       
         <Button
             android:id="@+id/add_location"
             android:layout_width="match_parent"

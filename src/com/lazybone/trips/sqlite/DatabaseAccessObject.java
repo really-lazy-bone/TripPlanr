@@ -44,14 +44,15 @@ public class DatabaseAccessObject {
 
 	}
 	
-	public void insertLocations(String location) {
+	public void insertLocations(String location, String name, double lat, double lon) {
 
 		ContentValues values = new ContentValues();
 		
 		values.put(DBOpenHelper.LOCATION_ADDRESS, location);
-		values.put(DBOpenHelper.LOCATION_NAME, NLOCATION_NAME);
+		values.put(DBOpenHelper.LOCATION_NAME, name);
 		values.put(DBOpenHelper.LOCATION_TYPE, NLOCATION_TYPE);
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
+		
 		mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);
 
 	}
