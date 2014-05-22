@@ -28,7 +28,7 @@ public class Trip_Detail_Fragment extends Fragment {
 
 		dao = new DatabaseAccessObject(getActivity());
 
-		c = dao.readAddress();
+		
 
 		setRetainInstance(true);
 	}
@@ -40,6 +40,8 @@ public class Trip_Detail_Fragment extends Fragment {
 				false);
 		
 		long tripId = this.getArguments().getLong("tripId");
+		
+		c = dao.readAddress(tripId);
 		
 		Cursor tripCursor = dao.readTrip(tripId);
 		

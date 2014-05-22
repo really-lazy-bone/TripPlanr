@@ -101,7 +101,24 @@ public class DatabaseAccessObject {
 				DBOpenHelper.location_columns, null, new String[] {}, null,
 				null, null);
 	}
-
+	
+	// Overload readAdderss(long tripId), search certain trip locations address
+	public Cursor readAddress(long tripId) {
+		
+		Cursor c = mDB.query(DBOpenHelper.TABLE_MANY_TO_MANY,
+				DBOpenHelper.location_ids, DBOpenHelper.TRIP_ID+"=?", new String[] {tripId + ""}, null,
+				null, null);
+		String[] location_ids = new String[]{};
+		int i = 0;
+		while(c.moveToNext()){
+			location_ids[i] = c.getString(1);
+		}
+		
+		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
+				DBOpenHelper.location_columns, DBOpenHelper.LOCATION_ID, location_ids, null,
+				null, null);
+	}
+	
 	public Cursor readTrip(long tripId) {
 
 		return mDB.query(DBOpenHelper.TABLE_TRIPS, new String[] {
