@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
@@ -112,7 +114,23 @@ public class New_Trip_Fragment extends Fragment {
 				tripNameInput = (EditText) rootView
 						.findViewById(R.id.name_of_trip);
 				String tripName = tripNameInput.getText().toString();
-
+				if(tripName.equals(""))
+				{
+					
+					Toast toast = Toast.makeText(getActivity(), "You must provide a name for the trip!!", 5);
+					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.show();
+					return;
+				}
+				if(main.locationsToAdd.size()==0)
+				{
+					Toast toast = Toast.makeText(getActivity(), "You must have at least 1 location!!!", 5);
+					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.show();
+					return;
+					
+				}
+				
 				Spinner travelMethodInput = (Spinner) rootView
 						.findViewById(R.id.travel_method_spinner);
 				String tripMethod = travelMethodInput.getSelectedItem()
@@ -121,6 +139,7 @@ public class New_Trip_Fragment extends Fragment {
 				long tripId = dao.insertTrips(tripName, tripMethod,
 						main.locationsToAdd);
 
+				main.locationsToAdd.clear();
 				Bundle bundle = new Bundle();
 				bundle.putLong("tripId", tripId);
 
