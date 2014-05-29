@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -27,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -83,7 +83,7 @@ public class New_Location_Fragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-
+				
 				// not connected
 				if (NetworkUtil.getConnectivityStatus(getActivity()) == 0) {
 					CharSequence text = "You're not connected to the internet!!";
@@ -92,6 +92,16 @@ public class New_Location_Fragment extends Fragment {
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 					return;
+				}
+
+				else if(selectedPlace==null)
+				{
+					
+					Toast toast = Toast.makeText(getActivity(), "Select an item from the dropdown", 5);
+					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.show();
+					return;
+					
 				}
 
 				StringBuilder sb = new StringBuilder(PLACES_API_BASE
@@ -129,6 +139,12 @@ public class New_Location_Fragment extends Fragment {
 						.getItemAtPosition(position);
 				selectedPlace = placeClicked;
 				autoCompView.setText(placeClicked.getDescription());
+				
+				InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                           InputMethodManager.HIDE_NOT_ALWAYS);
 
 			}
 		});
