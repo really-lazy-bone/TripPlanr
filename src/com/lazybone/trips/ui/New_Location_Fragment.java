@@ -183,19 +183,10 @@ public class New_Location_Fragment extends Fragment {
 				if (selectedPlace.getTypes().contains("establishment")) {
 					addLocation(selectedPlace.getTerms().get(0), address, lat,
 							lon);
+					getActivity().getActionBar().setTitle("Create New Trip");
 
-					New_Trip_Fragment tripFrag = new New_Trip_Fragment();
-					FragmentTransaction transaction = getFragmentManager()
-							.beginTransaction();
-					// Replace whatever is in the fragment_container view with
-					// this fragment,
-					// and add the transaction to the back stack so the user can
-					// navigate back
-					transaction.replace(R.id.container, tripFrag);
-					transaction.addToBackStack(null);
+					getFragmentManager().popBackStackImmediate();
 
-					// Commit the transaction
-					transaction.commit();
 				} else {
 					// launch dialog to ask user for name of location
 					LayoutInflater li = LayoutInflater.from(getActivity());
@@ -225,22 +216,9 @@ public class New_Location_Fragment extends Fragment {
 													selectedPlace.getLat(),
 													selectedPlace.getLng());
 
-											New_Trip_Fragment tripFrag = new New_Trip_Fragment();
-											FragmentTransaction transaction = getFragmentManager()
-													.beginTransaction();
-											// Replace whatever is in the
-											// fragment_container view with this
-											// fragment,
-											// and add the transaction to the
-											// back stack so the user can
-											// navigate back
-											transaction.replace(R.id.container,
-													tripFrag);
-											transaction.addToBackStack(null);
+											getActivity().getActionBar().setTitle("Create New Trip");
 
-											// Commit the transaction
-											transaction.commit();
-
+											getFragmentManager().popBackStackImmediate();
 										}
 									})
 							.setNegativeButton("Cancel",

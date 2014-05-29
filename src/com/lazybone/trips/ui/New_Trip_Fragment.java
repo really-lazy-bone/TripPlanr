@@ -2,12 +2,16 @@ package com.lazybone.trips.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+
 import com.lazybone.trips.sqlite.DBOpenHelper;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
@@ -27,17 +32,18 @@ public class New_Trip_Fragment extends Fragment {
 	private SimpleCursorAdapter mAdapter;
 	private Cursor c;
 	private DatabaseAccessObject dao;
-
+	private EditText tripNameInput ;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		dao = new DatabaseAccessObject(getActivity());
 
 		c = dao.readAddress();
 
-		setRetainInstance(true);
 	}
+	   
+
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +51,8 @@ public class New_Trip_Fragment extends Fragment {
 		final View rootView = inflater.inflate(R.layout.new_trip, container,
 				false);
 
+		
+	
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
 
@@ -86,8 +94,9 @@ public class New_Trip_Fragment extends Fragment {
 				// fragment,
 				// and add the transaction to the back stack so the user can
 				// navigate back
-				transaction.replace(R.id.container, locationFrag);
-				transaction.addToBackStack(null);
+				transaction.replace(R.id.container, locationFrag, "newTripFragment");
+				
+				transaction.addToBackStack("newTripFragment");
 
 				// Commit the transaction
 				transaction.commit();
@@ -106,9 +115,10 @@ public class New_Trip_Fragment extends Fragment {
 					locationIds.add(c.getInt(0));
 				}
 
-				EditText tripNameInput = (EditText) rootView
+				tripNameInput = (EditText) rootView
 						.findViewById(R.id.name_of_trip);
 				String tripName = tripNameInput.getText().toString();
+				
 
 				Spinner travelMethodInput = (Spinner) rootView
 						.findViewById(R.id.travel_method_spinner);
@@ -131,8 +141,8 @@ public class New_Trip_Fragment extends Fragment {
 				// fragment,
 				// and add the transaction to the back stack so the user can
 				// navigate back
-				transaction.replace(R.id.container, tripDetailFrag);
-				transaction.addToBackStack(null);
+				transaction.replace(R.id.container, tripDetailFrag, "newTripFragment");
+				transaction.addToBackStack("newTripFragment");
 
 				// Commit the transaction
 				transaction.commit();
