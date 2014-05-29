@@ -1,11 +1,15 @@
 package com.lazybone.trips.sqlite;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.lazybone.trips.google.places.autocomplete.Place;
 
 public class DatabaseAccessObject {
 
@@ -25,10 +29,25 @@ public class DatabaseAccessObject {
 		mDB = mDbHelper.getWritableDatabase();
 	}
 
+	public long addLocation(Place placeToInsert) {
+
+		return insertLocations(placeToInsert.getFormattedAddress(),
+				placeToInsert.getName(), placeToInsert.getLat(),
+				placeToInsert.getLng());
+
+	}
+
 	public long insertTrips(String tripName, String tripMethod,
-			List<Integer> locationIds) {
+			List<Place> placesToInsert) {
 		ContentValues values = new ContentValues();
 
+		ArrayList<Integer> locationIds = new ArrayList<Integer>();
+
+		for (Place place : placesToInsert) {
+			int locationId = (int) addLocation(place);
+			locationIds.add(locationId);
+
+		}
 		values.put(DBOpenHelper.TRIP_NAME, tripName);
 		values.put(DBOpenHelper.TRIP_TIME, NTRIP_TIME);
 
@@ -52,7 +71,7 @@ public class DatabaseAccessObject {
 		return tripId;
 	}
 
-	public void insertLocations(String location, String name, double lat,
+	public long insertLocations(String location, String name, double lat,
 			double lon) {
 		ContentValues values = new ContentValues();
 
@@ -61,7 +80,7 @@ public class DatabaseAccessObject {
 		values.put(DBOpenHelper.LOCATION_TYPE, NLOCATION_TYPE);
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
 
-		mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);
+		return mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);
 	}
 
 	public void deleteLocation(int id) {
@@ -101,33 +120,33 @@ public class DatabaseAccessObject {
 				DBOpenHelper.location_columns, null, new String[] {}, null,
 				null, null);
 	}
-	
+
 	// Overload readAdderss(long tripId), search certain trip locations address
 	public Cursor readAddress(long tripId) {
-		
-		Cursor c = mDB.query(DBOpenHelper.TABLE_MANY_TO_MANY,
-				new String[] { DBOpenHelper._ID,DBOpenHelper.LOCATION_ID},
-				DBOpenHelper.TRIP_ID + "=?", new String[] {tripId + ""}, null, null, null);
-		
-			StringBuilder location_ids = new StringBuilder();
-			location_ids.append("(");
-			int i = 0;
-			if (c.moveToFirst()){
-				do{	
-					location_ids.append(c.getString(1)+",");
-					i++;
-				}while (c.moveToNext());
-			}
-			location_ids.deleteCharAt(location_ids.length()- 1 );
-			location_ids.append(")");
-			
+
+		Cursor c = mDB.query(DBOpenHelper.TABLE_MANY_TO_MANY, new String[] {
+				DBOpenHelper._ID, DBOpenHelper.LOCATION_ID },
+				DBOpenHelper.TRIP_ID + "=?", new String[] { tripId + "" },
+				null, null, null);
+
+		StringBuilder location_ids = new StringBuilder();
+		location_ids.append("(");
+		int i = 0;
+		if (c.moveToFirst()) {
+			do {
+				location_ids.append(c.getString(1) + ",");
+				i++;
+			} while (c.moveToNext());
+		}
+		location_ids.deleteCharAt(location_ids.length() - 1);
+		location_ids.append(")");
+
 		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
-				DBOpenHelper.location_columns, DBOpenHelper._ID + " in "+location_ids, new String[] {}, null,
-				null, null);
-		
-		
+				DBOpenHelper.location_columns, DBOpenHelper._ID + " in "
+						+ location_ids, new String[] {}, null, null, null);
+
 	}
-	
+
 	public Cursor readTrip(long tripId) {
 
 		return mDB.query(DBOpenHelper.TABLE_TRIPS, new String[] {

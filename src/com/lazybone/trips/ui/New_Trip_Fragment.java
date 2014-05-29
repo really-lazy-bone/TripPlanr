@@ -1,49 +1,47 @@
 package com.lazybone.trips.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-import com.lazybone.trips.sqlite.DBOpenHelper;
+import com.lazybone.trips.google.places.autocomplete.Place;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
 
 public class New_Trip_Fragment extends Fragment {
 
-	private SimpleCursorAdapter mAdapter;
-	private Cursor c;
+	// private SimpleCursorAdapter mAdapter;
+	// private Cursor c;
+	private PlaceArrayAdapter placeAdapter;
 	private DatabaseAccessObject dao;
-	private EditText tripNameInput ;
+	private EditText tripNameInput;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dao = new DatabaseAccessObject(getActivity());
+		//
+		// c = dao.readAddress();
 
-		c = dao.readAddress();
-
+		setRetainInstance(true);
 	}
-	   
-
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,37 +49,37 @@ public class New_Trip_Fragment extends Fragment {
 		final View rootView = inflater.inflate(R.layout.new_trip, container,
 				false);
 
-		
-	
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
 
-		mAdapter = new MyCursorAdapter(getActivity(),
-				R.layout.location_row, c, DBOpenHelper.location_columns,
-				new int[] { 0, R.id.location_id, R.id.location_label }, 0);
-
-		listLocationView.setAdapter(mAdapter);
+		// mAdapter = new MyCursorAdapter(getActivity(),
+		// R.layout.location_row, c, DBOpenHelper.location_columns,
+		// new int[] { 0, R.id.location_id, R.id.location_label }, 0);
+		//
+		MainActivity main = (MainActivity) getActivity();
+		placeAdapter = new PlaceArrayAdapter(getActivity(), main.locationsToAdd);
+		listLocationView.setAdapter(placeAdapter);
 
 		Button addLocationButton = (Button) rootView
 				.findViewById(R.id.add_location);
 
 		Button addTripButton = (Button) rootView.findViewById(R.id.create_plan);
 
-		listLocationView.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("deprecation")
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				c.moveToPosition(position);
-
-				int location_id = c.getInt(0);
-
-				dao.deleteLocation(location_id);
-
-				mAdapter.getCursor().requery();
-				mAdapter.notifyDataSetChanged();
-			}
-		});
+		// listLocationView.setOnItemClickListener(new OnItemClickListener() {
+		// @SuppressWarnings("deprecation")
+		// public void onItemClick(AdapterView<?> parent, View view,
+		// int position, long id) {
+		//
+		// c.moveToPosition(position);
+		//
+		// int location_id = c.getInt(0);
+		//
+		// dao.deleteLocation(location_id);
+		//
+		// mAdapter.getCursor().requery();
+		// mAdapter.notifyDataSetChanged();
+		// }
+		// });
 
 		addLocationButton.setOnClickListener(new View.OnClickListener() {
 
@@ -94,8 +92,9 @@ public class New_Trip_Fragment extends Fragment {
 				// fragment,
 				// and add the transaction to the back stack so the user can
 				// navigate back
-				transaction.replace(R.id.container, locationFrag, "newTripFragment");
-				
+				transaction.replace(R.id.container, locationFrag,
+						"newTripFragment");
+
 				transaction.addToBackStack("newTripFragment");
 
 				// Commit the transaction
@@ -108,25 +107,19 @@ public class New_Trip_Fragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				List<Integer> locationIds = new ArrayList<Integer>();
 
-				for (int i = 0; i < c.getCount(); i++) {
-					c.moveToPosition(i);
-					locationIds.add(c.getInt(0));
-				}
-
+				MainActivity main = (MainActivity) getActivity();
 				tripNameInput = (EditText) rootView
 						.findViewById(R.id.name_of_trip);
 				String tripName = tripNameInput.getText().toString();
-				
 
 				Spinner travelMethodInput = (Spinner) rootView
 						.findViewById(R.id.travel_method_spinner);
 				String tripMethod = travelMethodInput.getSelectedItem()
 						.toString();
 
-				long tripId = dao
-						.insertTrips(tripName, tripMethod, locationIds);
+				long tripId = dao.insertTrips(tripName, tripMethod,
+						main.locationsToAdd);
 
 				Bundle bundle = new Bundle();
 				bundle.putLong("tripId", tripId);
@@ -141,8 +134,8 @@ public class New_Trip_Fragment extends Fragment {
 				// fragment,
 				// and add the transaction to the back stack so the user can
 				// navigate back
-				transaction.replace(R.id.container, tripDetailFrag, "newTripFragment");
-				transaction.addToBackStack("newTripFragment");
+				transaction.replace(R.id.container, tripDetailFrag);
+				transaction.addToBackStack(null);
 
 				// Commit the transaction
 				transaction.commit();
@@ -153,30 +146,70 @@ public class New_Trip_Fragment extends Fragment {
 		return rootView;
 	}
 
-	// extend the SimpleCursorAdapter to create a custom class where we
-	// can override the getView to change the row colors
-	@SuppressLint("ResourceAsColor")
-	private class MyCursorAdapter extends SimpleCursorAdapter {
+	private class PlaceArrayAdapter extends ArrayAdapter<Place> {
 
-		public MyCursorAdapter(Context context, int layout, Cursor c,
-				String[] from, int[] to, int flags) {
-			super(context, layout, c, from, to, flags);
+		private final Context context;
+		private final ArrayList<Place> values;
+
+		public PlaceArrayAdapter(Context context, ArrayList<Place> values) {
+			super(context, R.layout.row, values);
+			this.context = context;
+			this.values = values;
+
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View view = inflater.inflate(R.layout.location_row, parent, false);
+			TextView name = (TextView) view.findViewById(R.id.location_id);
+			TextView address = (TextView) view
+					.findViewById(R.id.location_label);
+
+			name.setText(values.get(position).getName());
+			address.setText(values.get(position).getFormattedAddress());
+
 			// get reference to the row
-			View view = super.getView(position, convertView, parent);
 			// check for odd or even to set alternate colors to the row
 			// background
 			if (position % 2 == 0) {
-				view.setBackgroundColor(getResources().getColor(R.color.even_row));
+				view.setBackgroundColor(getResources().getColor(
+						R.color.even_row));
 			} else {
-				view.setBackgroundColor(getResources().getColor(R.color.odd_row));
+				view.setBackgroundColor(getResources()
+						.getColor(R.color.odd_row));
 			}
 			return view;
 		}
 
 	}
+
+	// // extend the SimpleCursorAdapter to create a custom class where we
+	// // can override the getView to change the row colors
+	// @SuppressLint("ResourceAsColor")
+	// private class MyCursorAdapter extends SimpleCursorAdapter {
+	//
+	// public MyCursorAdapter(Context context, int layout, Cursor c,
+	// String[] from, int[] to, int flags) {
+	// super(context, layout, c, from, to, flags);
+	// }
+	//
+	// @Override
+	// public View getView(int position, View convertView, ViewGroup parent) {
+	//
+	// // get reference to the row
+	// View view = super.getView(position, convertView, parent);
+	// // check for odd or even to set alternate colors to the row
+	// // background
+	// if (position % 2 == 0) {
+	// view.setBackgroundColor(getResources().getColor(R.color.even_row));
+	// } else {
+	// view.setBackgroundColor(getResources().getColor(R.color.odd_row));
+	// }
+	// return view;
+	// }
+	//
+	// }
 }

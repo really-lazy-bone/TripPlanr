@@ -74,7 +74,7 @@ public class New_Location_Fragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.new_location,
 				container, false);
-		
+
 		getActivity().getActionBar().setTitle("Add New Location");
 
 		confirmAddLocation = (Button) rootView
@@ -136,13 +136,6 @@ public class New_Location_Fragment extends Fragment {
 		return rootView;
 	}
 
-	public void addLocation(String locationName, String address, double lat,
-			double lon) {
-
-		dao.insertLocations(address, locationName, lat, lon);
-
-	}
-
 	private class PlacesDetailTask extends AsyncTask<URL, Integer, JSONObject> {
 		protected JSONObject doInBackground(URL... urls) {
 			HttpURLConnection urlConnection = null;
@@ -181,8 +174,14 @@ public class New_Location_Fragment extends Fragment {
 				selectedPlace.setLng(lon);
 
 				if (selectedPlace.getTypes().contains("establishment")) {
-					addLocation(selectedPlace.getTerms().get(0), address, lat,
-							lon);
+					// addLocation(selectedPlace.getTerms().get(0), address,
+					// lat,
+					// lon);
+
+					selectedPlace.setName(selectedPlace.getTerms().get(0));
+					MainActivity main = (MainActivity) getActivity();
+
+					main.locationsToAdd.add(selectedPlace);
 					getActivity().getActionBar().setTitle("Create New Trip");
 
 					getFragmentManager().popBackStackImmediate();
@@ -209,16 +208,23 @@ public class New_Location_Fragment extends Fragment {
 											// result
 											selectedPlace.setName(userInput
 													.getText().toString());
-											addLocation(
-													selectedPlace.getName(),
-													selectedPlace
-															.getFormattedAddress(),
-													selectedPlace.getLat(),
-													selectedPlace.getLng());
+											// addLocation(
+											// selectedPlace.getName(),
+											// selectedPlace
+											// .getFormattedAddress(),
+											// selectedPlace.getLat(),
+											// selectedPlace.getLng());
 
-											getActivity().getActionBar().setTitle("Create New Trip");
+											MainActivity main = (MainActivity) getActivity();
 
-											getFragmentManager().popBackStackImmediate();
+											main.locationsToAdd
+													.add(selectedPlace);
+											getActivity()
+													.getActionBar()
+													.setTitle("Create New Trip");
+
+											getFragmentManager()
+													.popBackStackImmediate();
 										}
 									})
 							.setNegativeButton("Cancel",
