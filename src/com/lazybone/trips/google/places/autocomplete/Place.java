@@ -2,6 +2,8 @@ package com.lazybone.trips.google.places.autocomplete;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class Place {
 
 	private ArrayList<String> types;
@@ -88,6 +90,18 @@ public class Place {
 
 	public void setLng(double lng) {
 		this.lng = lng;
+	}
+
+	//returns long 
+	public String getTypeString() {
+		
+		StringBuilder s = new StringBuilder();
+		for (String type : types) {
+			s.append(type +",");
+		}
+		s.deleteCharAt(s.length()-1);
+		return s.toString();
+		
 	}
 
 }

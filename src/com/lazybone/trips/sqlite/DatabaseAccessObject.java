@@ -32,7 +32,7 @@ public class DatabaseAccessObject {
 	public long addLocation(Place placeToInsert) {
 
 		return insertLocations(placeToInsert.getFormattedAddress(),
-				placeToInsert.getName(), placeToInsert.getLat(),
+				placeToInsert.getName(), placeToInsert.getTypeString(),placeToInsert.getLat(),
 				placeToInsert.getLng());
 
 	}
@@ -71,7 +71,7 @@ public class DatabaseAccessObject {
 		return tripId;
 	}
 
-	public long insertLocations(String location, String name, double lat,
+	public long insertLocations(String location, String name, String type, double lat,
 			double lon) {
 		ContentValues values = new ContentValues();
 

@@ -186,6 +186,14 @@ public class New_Trip_Fragment extends Fragment {
 			TextView name = (TextView) view.findViewById(R.id.location_id);
 			TextView address = (TextView) view
 					.findViewById(R.id.location_label);
+			ImageView imageView = (ImageView) view.findViewById(R.id.location_icon);
+			Place place = values.get(position);
+			if (place.getTypes().contains("establishment")) {
+				imageView.setImageResource(R.drawable.icon_business);
+
+			} else {
+				imageView.setImageResource(R.drawable.icon_map_marker);
+			}
 
 			name.setText(values.get(position).getName());
 			address.setText(values.get(position).getFormattedAddress());
