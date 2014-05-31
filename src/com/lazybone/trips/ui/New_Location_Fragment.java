@@ -185,11 +185,12 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 						.getJSONObject("geometry").getJSONObject("location")
 						.getDouble("lng");
 
+				Log.d("address",address);
 				selectedPlace.setFormattedAddress(address);
 				selectedPlace.setLat(lat);
 				selectedPlace.setLng(lon);
-
-				if (selectedPlace.getTypes().contains("establishment")) {
+			
+				if (selectedPlace.getTypes().contains("establishment")||!selectedPlace.getTypes().contains("street_address")) {
 					// addLocation(selectedPlace.getTerms().get(0), address,
 					// lat,
 					// lon);

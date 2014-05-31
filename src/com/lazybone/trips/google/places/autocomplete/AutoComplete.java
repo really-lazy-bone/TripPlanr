@@ -68,7 +68,7 @@ public class AutoComplete {
 			JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
 			// Extract the Place descriptions from the results
-			resultList = new ArrayList<Place>(predsJsonArray.length());
+			resultList = new ArrayList<Place>();
 			for (int i = 0; i < predsJsonArray.length(); i++) {
 				
 				
@@ -89,6 +89,12 @@ public class AutoComplete {
 				for (int j = 0; j < typesArray.length(); j++) {
 					placeToAdd.getTypes().add(typesArray.getString(j));
 
+				}
+
+				if(placeToAdd.getTypes().contains("postal_code"))
+				{
+					//Don't show postal addresses
+					continue;
 				}
 
 				resultList.add(placeToAdd);
