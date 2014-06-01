@@ -8,6 +8,8 @@
         android:orientation="vertical"
         android:padding="20dp"
         android:background="@color/lightorange" 
+       
+		        
          >
 
         <EditText
@@ -28,7 +30,11 @@
         <ListView
             android:id="@+id/list_location"
             android:layout_width="match_parent"
-            android:layout_height="310dp" >
+            android:layout_height="wrap_content"
+             android:layout_marginTop = "20dp"
+	   android:layout_marginBottom = "20dp"
+             >
+       		
         </ListView>
 
        
@@ -39,12 +45,19 @@
             android:drawableLeft="@drawable/icon_plus"
             android:drawablePadding="10dp"
             android:gravity="left"
-            android:text="@string/add_location_hint" />
+            android:text="@string/add_location_hint" 
+            
+             android:layout_marginTop = "20dp"
+	   android:layout_marginBottom = "20dp"
+            />
 
         <LinearLayout
             android:id="@+id/travel_selection"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+             android:layout_marginTop = "20dp"
+	   android:layout_marginBottom = "20dp"
+            >
 
             <TextView
                 android:id="@+id/travel_text_view"
@@ -68,6 +81,9 @@
             android:drawableLeft="@drawable/icon_save"
             android:drawablePadding="10dp"
             android:gravity="left"
-            android:text="@string/create_plan_hint" />
+            android:text="@string/create_plan_hint" 
+             android:layout_marginTop = "10dp"
+	   android:layout_marginBottom = "20dp"
+            />
     </LinearLayout>
 

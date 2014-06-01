@@ -49,7 +49,7 @@ public class New_Location_Fragment extends Fragment {
 	private static final String LOG_TAG = "TripPlnr";
 
 	private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-	private static final String AMAZON_URL = "http://ec2-54-187-205-237.us-west-2.compute.amazonaws.com:8181/places?googlePlacesURL=";
+	private static final String AMAZON_URL = "http://ec2-54-200-230-148.us-west-2.compute.amazonaws.com:8181/places?googlePlacesURL=";
 	private static final String TYPE_DETAIL = "/details";
 	private static final String OUT_JSON = "/json";
 
@@ -175,6 +175,7 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 		protected void onPostExecute(JSONObject result) {
 
 			try {
+				Log.d("resultDetail", result.toString());
 
 				String address = result.getJSONObject("result").getString(
 						"formatted_address");
