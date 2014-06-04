@@ -13,7 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
+
+import com.lazybone.trips.sqlite.DatabaseAccessObject;
+
 
 public class AutoComplete {
 
@@ -23,10 +28,35 @@ public class AutoComplete {
 	private static final String AMAZON_URL = "http://ec2-54-200-230-148.us-west-2.compute.amazonaws.com:8181/places?googlePlacesURL=";
 	private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
 	private static final String OUT_JSON = "/json";
+	private static DatabaseAccessObject dao;
+	
+	public static ArrayList<Place> autocomplete(String input, Context activity) {
+		ArrayList<Place> resultList = new ArrayList<Place>();
+		
+		// pattern match in local database
+		dao = new DatabaseAccessObject(activity);
+		
+			Cursor c = dao.matchLocation(input);
+		
+		if (c.moveToFirst()) {
 
-	public static ArrayList<Place> autocomplete(String input) {
-		ArrayList<Place> resultList = null;
-
+            while (c.isAfterLast() == false) {
+            	long id = Long.parseLong(c.getString(c.getColumnIndex("_id")));
+                String name = c.getString(c.getColumnIndex("name"));
+                String address = c.getString(c.getColumnIndex("address"));
+                String type = c.getString(c.getColumnIndex("type"));
+                double lat = c.getColumnIndex("lax");
+                double lon = c.getColumnIndex("lon");
+                
+                Place placeToAdd = new Place(id, name, address, lat, lon, type, true);
+                resultList.add(placeToAdd);
+                
+                Log.d("test02","db :" + name);
+                c.moveToNext();
+            }
+        
+		}
+		
 		HttpURLConnection conn = null;
 		StringBuilder response = new StringBuilder();
 		try {
@@ -68,7 +98,7 @@ public class AutoComplete {
 			JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
 			// Extract the Place descriptions from the results
-			resultList = new ArrayList<Place>();
+			//resultList = new ArrayList<Place>();
 			for (int i = 0; i < predsJsonArray.length(); i++) {
 				
 				
@@ -105,4 +135,5 @@ public class AutoComplete {
 
 		return resultList;
 	}
+	
 }

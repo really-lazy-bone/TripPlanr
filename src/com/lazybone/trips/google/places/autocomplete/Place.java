@@ -8,10 +8,13 @@ public class Place {
 
 	private ArrayList<String> types;
 
+	private long id;
 	private String description;
 	private ArrayList<String> terms;
 	private String reference;
-
+	private boolean isDB;
+	
+	
 	// only use when place is not an establishment
 	private String name;
 
@@ -25,6 +28,20 @@ public class Place {
 		this.description = description;
 		this.reference = reference;
 		this.types = new ArrayList<String>();
+		this.terms = new ArrayList<String>();
+	}
+	
+	public Place(long id, String name, String address, double lat, double lon, 
+			String type, boolean isDB){
+		this.id = id;
+		this.description = name;
+		this.formattedAddress = address;
+		this.lat = lat;
+		this.lng = lon;
+		this.isDB = isDB;
+		this.reference = "DATABASE";
+		this.types = new ArrayList<String>();
+		this.types.add(type);
 		this.terms = new ArrayList<String>();
 	}
 
@@ -90,6 +107,23 @@ public class Place {
 
 	public void setLng(double lng) {
 		this.lng = lng;
+	}
+
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public boolean isDB() {
+		return isDB;
+	}
+
+	public void setDB(boolean isDB) {
+		this.isDB = isDB;
 	}
 
 	//returns long 

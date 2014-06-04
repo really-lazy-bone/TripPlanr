@@ -18,9 +18,13 @@ public class DatabaseAccessObject {
 
 	private Integer NTRIP_TIME = 1000;
 
-	private String NLOCATION_TYPE = "school";
+	private String NLOCATION_TYPE = "default";
 	private String NLOCATION_NOTES = "test notes";
 
+	public DatabaseAccessObject() {
+		
+	}
+	
 	public DatabaseAccessObject(Context activity) {
 		// Create a new DatabaseHelper
 		mDbHelper = new DBOpenHelper(activity);
@@ -44,8 +48,16 @@ public class DatabaseAccessObject {
 		ArrayList<Integer> locationIds = new ArrayList<Integer>();
 
 		for (Place place : placesToInsert) {
-			int locationId = (int) addLocation(place);
-			locationIds.add(locationId);
+			int locationId = -1;
+			if (!place.isDB()) {
+				locationId = (int) addLocation(place);
+				locationIds.add(locationId);
+			}
+			else {
+				locationId = (int) place.getId();
+				locationIds.add(locationId);
+				
+			}
 
 		}
 		values.put(DBOpenHelper.TRIP_NAME, tripName);
@@ -161,6 +173,19 @@ public class DatabaseAccessObject {
 				new String[] {}, null, null, null);
 	}
 
+	public Cursor matchLocation(String letter){
+		/*return mDB.query(DBOpenHelper.TABLE_LOCATIONS, new String[] {
+				DBOpenHelper._ID, DBOpenHelper.LOCATION_ADDRESS,
+				DBOpenHelper.LOCATION_NAME,DBOpenHelper.LOCATION_TYPE,
+				DBOpenHelper.LOCATION_NOTES,
+				DBOpenHelper.LOCATION_LAT, DBOpenHelper.LOCATION_LON}, 
+				"name LIKE '?%'",
+				new String[] {letter}, null, null, null);*/
+		return mDB.rawQuery("select _id, name, address, type, notes, lat, lon "
+				+ "from Locations where name LIKE ?" 
+				,new String [] {"%" + letter + "%"});
+	}
+	
 	// Delete all records
 	public void clearAll() {
 		mDB.delete(DBOpenHelper.TABLE_TRIPS, null, null);

@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.lazybone.trips.google.places.autocomplete.AutoComplete;
 import com.lazybone.trips.google.places.autocomplete.Place;
+import com.lazybone.trips.model.Location;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.lazybone.trips.util.NetworkUtil;
 import com.tripplanr.R;
@@ -57,6 +58,7 @@ public class New_Location_Fragment extends Fragment {
 	private AutoCompleteTextView autoCompView;
 	private Button confirmAddLocation;
 	private Place selectedPlace;
+	private Location location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,17 +85,17 @@ public class New_Location_Fragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				
-				// not connected
-				if (NetworkUtil.getConnectivityStatus(getActivity()) == 0) {
-					CharSequence text = "You're not connected to the internet!!";
+				if (!selectedPlace.isDB()){
+					// not connected
+					if (NetworkUtil.getConnectivityStatus(getActivity()) == 0) {
+						CharSequence text = "You're not connected to the internet!!";
 
-					Toast toast = Toast.makeText(getActivity(), text, 5);
-					toast.setGravity(Gravity.TOP, 0, 0);
-					toast.show();
-					return;
+						Toast toast = Toast.makeText(getActivity(), text, 5);
+						toast.setGravity(Gravity.TOP, 0, 0);
+						toast.show();
+						return;
+					}
 				}
-
 				else if(selectedPlace==null)
 				{
 					
@@ -103,26 +105,32 @@ public class New_Location_Fragment extends Fragment {
 					return;
 					
 				}
+				
+				if (!selectedPlace.isDB()){
+					StringBuilder sb = new StringBuilder(PLACES_API_BASE
+							+ TYPE_DETAIL + OUT_JSON);
+					sb.append("?sensor=false");
+				
+					sb.append("&reference=" + selectedPlace.getReference());
+				
+					try {
+						URL url = new URL(AMAZON_URL
+								+ URLEncoder.encode(sb.toString(), "utf8"));
+						Log.d("details", url.toString());
 
-				StringBuilder sb = new StringBuilder(PLACES_API_BASE
-						+ TYPE_DETAIL + OUT_JSON);
-				sb.append("?sensor=false");
-				sb.append("&reference=" + selectedPlace.getReference());
-				try {
-					URL url = new URL(AMAZON_URL
-							+ URLEncoder.encode(sb.toString(), "utf8"));
-					Log.d("details", url.toString());
+						// not connected
 
-					// not connected
+						new PlacesDetailTask().execute(url);
 
-					new PlacesDetailTask().execute(url);
-
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 				}
-
+				else {
+					AddLocationToTrip();
+				}
 			}
 		});
 
@@ -152,6 +160,86 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 		return rootView;
 	}
 
+	public void AddLocationToTrip(){
+		
+		if (selectedPlace.getTypes().contains("establishment")
+				||!selectedPlace.getTypes().contains("street_address")) {
+			// addLocation(selectedPlace.getTerms().get(0), address,
+			// lat,
+			// lon);
+			if (selectedPlace.getTerms().size() != 0){
+				selectedPlace.setName(selectedPlace.getTerms().get(0));
+			}
+			else {
+				selectedPlace.setName(selectedPlace.getDescription());
+			}
+			MainActivity main = (MainActivity) getActivity();
+			
+			main.locationsToAdd.add(selectedPlace);
+			
+			getActivity().getActionBar().setTitle("Create New Trip");
+
+			getFragmentManager().popBackStackImmediate();
+
+		} 
+		else {
+			// launch dialog to ask user for name of location
+			LayoutInflater li = LayoutInflater.from(getActivity());
+			View promptsView = li.inflate(
+					R.layout.custom_address_name_prompt, null);
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+					getActivity());
+			alertDialogBuilder.setView(promptsView);
+
+			final EditText userInput = (EditText) promptsView
+					.findViewById(R.id.editTextDialogUserInput);
+			// set dialog message
+			alertDialogBuilder
+					.setCancelable(false)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										DialogInterface dialog, int id) {
+									// get user input and set it to
+									// result
+									selectedPlace.setName(userInput
+											.getText().toString());
+									// addLocation(
+									// selectedPlace.getName(),
+									// selectedPlace
+									// .getFormattedAddress(),
+									// selectedPlace.getLat(),
+									// selectedPlace.getLng());
+
+									MainActivity main = (MainActivity) getActivity();
+									
+									main.locationsToAdd
+											.add(selectedPlace);
+									
+									getActivity()
+											.getActionBar()
+											.setTitle("Create New Trip");
+
+									getFragmentManager()
+											.popBackStackImmediate();
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										DialogInterface dialog, int id) {
+									dialog.cancel();
+								}
+							});
+
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			// show it
+			alertDialog.show();
+		}
+	}
+	
 	private class PlacesDetailTask extends AsyncTask<URL, Integer, JSONObject> {
 		protected JSONObject doInBackground(URL... urls) {
 			HttpURLConnection urlConnection = null;
@@ -176,7 +264,8 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 
 			try {
 				Log.d("resultDetail", result.toString());
-
+				
+				
 				String address = result.getJSONObject("result").getString(
 						"formatted_address");
 				double lat = result.getJSONObject("result")
@@ -190,76 +279,11 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 				selectedPlace.setFormattedAddress(address);
 				selectedPlace.setLat(lat);
 				selectedPlace.setLng(lon);
-			
-				if (selectedPlace.getTypes().contains("establishment")||!selectedPlace.getTypes().contains("street_address")) {
-					// addLocation(selectedPlace.getTerms().get(0), address,
-					// lat,
-					// lon);
+				
+				AddLocationToTrip();
+				
 
-					selectedPlace.setName(selectedPlace.getTerms().get(0));
-					MainActivity main = (MainActivity) getActivity();
-
-					main.locationsToAdd.add(selectedPlace);
-					getActivity().getActionBar().setTitle("Create New Trip");
-
-					getFragmentManager().popBackStackImmediate();
-
-				} else {
-					// launch dialog to ask user for name of location
-					LayoutInflater li = LayoutInflater.from(getActivity());
-					View promptsView = li.inflate(
-							R.layout.custom_address_name_prompt, null);
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-							getActivity());
-					alertDialogBuilder.setView(promptsView);
-
-					final EditText userInput = (EditText) promptsView
-							.findViewById(R.id.editTextDialogUserInput);
-					// set dialog message
-					alertDialogBuilder
-							.setCancelable(false)
-							.setPositiveButton("OK",
-									new DialogInterface.OnClickListener() {
-										public void onClick(
-												DialogInterface dialog, int id) {
-											// get user input and set it to
-											// result
-											selectedPlace.setName(userInput
-													.getText().toString());
-											// addLocation(
-											// selectedPlace.getName(),
-											// selectedPlace
-											// .getFormattedAddress(),
-											// selectedPlace.getLat(),
-											// selectedPlace.getLng());
-
-											MainActivity main = (MainActivity) getActivity();
-
-											main.locationsToAdd
-													.add(selectedPlace);
-											getActivity()
-													.getActionBar()
-													.setTitle("Create New Trip");
-
-											getFragmentManager()
-													.popBackStackImmediate();
-										}
-									})
-							.setNegativeButton("Cancel",
-									new DialogInterface.OnClickListener() {
-										public void onClick(
-												DialogInterface dialog, int id) {
-											dialog.cancel();
-										}
-									});
-
-					// create alert dialog
-					AlertDialog alertDialog = alertDialogBuilder.create();
-
-					// show it
-					alertDialog.show();
-
-				}
+				
 			} catch (JSONException e) {
 				Log.e(LOG_TAG, "Cannot process JSON results", e);
 			}
@@ -336,7 +360,7 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 					if (constraint != null) {
 						// Retrieve the autocomplete results.
 						resultList = AutoComplete.autocomplete(constraint
-								.toString());
+								.toString(), getActivity());
 						// Assign the data to the FilterResults
 						filterResults.values = resultList;
 						filterResults.count = resultList.size();
