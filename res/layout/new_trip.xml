@@ -1,89 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_trip_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/lightorange"
+    android:orientation="vertical"
+    android:padding="20dp" >
 
+    <EditText
+        android:id="@+id/name_of_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/icon_tag"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="@string/trip_name_hint"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textSize="20sp" >
+    </EditText>
+
+    <ListView
+        android:id="@+id/list_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="80" >
+    </ListView>
+
+    <Button
+        android:id="@+id/add_location"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/icon_plus"
+        android:drawablePadding="10dp"
+        android:gravity="left"
+        android:text="@string/add_location_hint" />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:background="@color/lightorange" 
-       
-		        
-         >
+        android:id="@+id/travel_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp" >
 
-        <EditText
-            android:id="@+id/name_of_trip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_tag"
-            android:drawablePadding="10dp"
-            android:padding="10dp"
-            android:ems="10"
-            android:hint="@string/trip_name_hint"
-            android:inputType="text"
-            android:singleLine="true"
-            android:layout_marginBottom="10dp"
-            android:textSize="20sp" >
-        </EditText>
-
-        <ListView
-            android:id="@+id/list_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             android:layout_marginTop = "20dp"
-	   android:layout_marginBottom = "20dp"
-             >
-       		
-        </ListView>
-
-       
-        <Button
-            android:id="@+id/add_location"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:drawableLeft="@drawable/icon_plus"
-            android:drawablePadding="10dp"
-            android:gravity="left"
-            android:text="@string/add_location_hint" 
-            
-             android:layout_marginTop = "20dp"
-	   android:layout_marginBottom = "20dp"
-            />
-
-        <LinearLayout
-            android:id="@+id/travel_selection"
+        <TextView
+            android:id="@+id/travel_text_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-             android:layout_marginTop = "20dp"
-	   android:layout_marginBottom = "20dp"
-            >
+            android:layout_height="wrap_content"
+            android:text="@string/travel_method_text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/travel_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/travel_method_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                android:id="@+id/travel_method_spinner"
-                android:layout_width="132dp"
-                android:layout_height="wrap_content"
-                android:entries="@array/travel_arrays"
-                android:prompt="@string/travel_method_prompt" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/create_plan"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:drawableLeft="@drawable/icon_save"
-            android:drawablePadding="10dp"
-            android:gravity="left"
-            android:text="@string/create_plan_hint" 
-             android:layout_marginTop = "10dp"
-	   android:layout_marginBottom = "20dp"
-            />
+        <Spinner
+            android:id="@+id/travel_method_spinner"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/travel_arrays"
+            android:prompt="@string/travel_method_prompt" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/create_plan"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/icon_save"
+        android:drawablePadding="10dp"
+        android:gravity="left"
+        android:text="@string/create_plan_hint" />
+
+</LinearLayout>
