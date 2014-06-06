@@ -39,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.lazybone.trips.google.places.autocomplete.AutoComplete;
 import com.lazybone.trips.google.places.autocomplete.Place;
-import com.lazybone.trips.model.Location;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.lazybone.trips.util.NetworkUtil;
 import com.tripplanr.R;
@@ -56,7 +55,6 @@ public class New_Location_Fragment extends Fragment {
 	private AutoCompleteTextView autoCompView;
 	private Button confirmAddLocation;
 	private Place selectedPlace;
-	private Location location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

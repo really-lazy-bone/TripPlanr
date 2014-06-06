@@ -1,22 +1,15 @@
 package com.lazybone.trips.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +21,6 @@ import android.widget.Toast;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
 
-import com.lazybone.trips.sqlite.DBOpenHelper;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
 
@@ -55,8 +47,9 @@ public class New_Trip_Fragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.new_trip, container,
 				false);
-		
-		String[] travelMethods = getResources().getStringArray(R.array.travel_arrays);
+
+		String[] travelMethods = getResources().getStringArray(
+				R.array.travel_arrays);
 
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
@@ -69,10 +62,12 @@ public class New_Trip_Fragment extends Fragment {
 				.findViewById(R.id.add_location);
 
 		Button addTripButton = (Button) rootView.findViewById(R.id.create_plan);
-		Spinner mySpinner = (Spinner) rootView.findViewById(R.id.travel_method_spinner);
+		Spinner mySpinner = (Spinner) rootView
+				.findViewById(R.id.travel_method_spinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.spinner_travel_method, R.id.travel_method_hint, travelMethods);
-		
+				R.layout.spinner_travel_method, R.id.travel_method_hint,
+				travelMethods);
+
 		mySpinner.setAdapter(adapter);
 
 		// listLocationView.setOnItemClickListener(new OnItemClickListener() {
@@ -122,23 +117,23 @@ public class New_Trip_Fragment extends Fragment {
 				tripNameInput = (EditText) rootView
 						.findViewById(R.id.name_of_trip);
 				String tripName = tripNameInput.getText().toString();
-				if(tripName.equals(""))
-				{
-					
-					Toast toast = Toast.makeText(getActivity(), "You must provide a name for the trip!!", 5);
+				if (tripName.equals("")) {
+
+					Toast toast = Toast.makeText(getActivity(),
+							"You must provide a name for the trip!!", Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 					return;
 				}
-				if(main.locationsToAdd.size()==0)
-				{
-					Toast toast = Toast.makeText(getActivity(), "You must have at least 1 location!!!", 5);
+				if (main.locationsToAdd.size() == 0) {
+					Toast toast = Toast.makeText(getActivity(),
+							"You must have at least 1 location!!!", Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 					return;
-					
+
 				}
-				
+
 				Spinner travelMethodInput = (Spinner) rootView
 						.findViewById(R.id.travel_method_spinner);
 				String tripMethod = travelMethodInput.getSelectedItem()
@@ -194,7 +189,8 @@ public class New_Trip_Fragment extends Fragment {
 			TextView name = (TextView) view.findViewById(R.id.location_id);
 			TextView address = (TextView) view
 					.findViewById(R.id.location_label);
-			ImageView imageView = (ImageView) view.findViewById(R.id.location_icon);
+			ImageView imageView = (ImageView) view
+					.findViewById(R.id.location_icon);
 			Place place = values.get(position);
 			if (place.getTypes().contains("establishment")) {
 				imageView.setImageResource(R.drawable.icon_business);
