@@ -1,7 +1,6 @@
 package com.lazybone.trips.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;

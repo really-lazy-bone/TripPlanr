@@ -26,8 +26,8 @@
         android:id="@+id/list_location"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="80" >
     </ListView>
 
@@ -35,8 +35,8 @@
         android:id="@+id/add_location"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/icon_plus"
         android:drawablePadding="10dp"
         android:gravity="left"
@@ -46,16 +46,16 @@
         android:id="@+id/travel_selection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" >
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/travel_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/travel_method_text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
             android:id="@+id/travel_method_spinner"
@@ -69,8 +69,8 @@
         android:id="@+id/create_plan"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/icon_save"
         android:drawablePadding="10dp"
         android:gravity="left"
