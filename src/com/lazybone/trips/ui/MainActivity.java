@@ -1,6 +1,7 @@
 package com.lazybone.trips.ui;
 
 import java.util.ArrayList;
+import com.tripplanr.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
-import com.tripplanr.R;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(position + 1)).commit();
 	}
-
+	
 	public void onSectionAttached(int number) {
 		switch (number) {
 		case 1:

@@ -1,7 +1,6 @@
 package com.lazybone.trips.sqlite;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -143,11 +142,9 @@ public class DatabaseAccessObject {
 
 		StringBuilder location_ids = new StringBuilder();
 		location_ids.append("(");
-		int i = 0;
 		if (c.moveToFirst()) {
 			do {
 				location_ids.append(c.getString(1) + ",");
-				i++;
 			} while (c.moveToNext());
 		}
 		location_ids.deleteCharAt(location_ids.length() - 1);

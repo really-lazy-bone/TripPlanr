@@ -14,7 +14,7 @@
     <string name="new_location_hint">New Location</string>
     <string name="add_location_hint">Add Location</string>
     <string name="create_plan_hint">Create Plan</string>
-    <string name="travel_method_text">Default Traveling Method</string>
+    <string name="travel_method_text">Default Travel Method</string>
     
     <string name="location_icon_content">Location Icon</string>
     

@@ -10,10 +10,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -38,10 +37,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.lazybone.trips.google.places.autocomplete.AutoComplete;
 import com.lazybone.trips.google.places.autocomplete.Place;
-import com.lazybone.trips.model.Location;
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.lazybone.trips.util.NetworkUtil;
 import com.tripplanr.R;
@@ -58,7 +55,6 @@ public class New_Location_Fragment extends Fragment {
 	private AutoCompleteTextView autoCompView;
 	private Button confirmAddLocation;
 	private Place selectedPlace;
-	private Location location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +79,7 @@ public class New_Location_Fragment extends Fragment {
 				.findViewById(R.id.confirm_add_location);
 		confirmAddLocation.setOnClickListener(new OnClickListener() {
 
+			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
 				if (!selectedPlace.isDB()){

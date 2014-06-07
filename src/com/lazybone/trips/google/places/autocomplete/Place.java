@@ -2,8 +2,6 @@ package com.lazybone.trips.google.places.autocomplete;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 public class Place {
 
 	private ArrayList<String> types;
