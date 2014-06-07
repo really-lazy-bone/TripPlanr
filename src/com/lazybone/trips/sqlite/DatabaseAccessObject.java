@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
+import com.lazybone.trips.model.Location;
+import com.lazybone.trips.model.Route;
 
 public class DatabaseAccessObject {
 
@@ -21,9 +23,9 @@ public class DatabaseAccessObject {
 	private String NLOCATION_NOTES = "test notes";
 
 	public DatabaseAccessObject() {
-		
+
 	}
-	
+
 	public DatabaseAccessObject(Context activity) {
 		// Create a new DatabaseHelper
 		mDbHelper = new DBOpenHelper(activity);
@@ -35,8 +37,8 @@ public class DatabaseAccessObject {
 	public long addLocation(Place placeToInsert) {
 
 		return insertLocations(placeToInsert.getFormattedAddress(),
-				placeToInsert.getName(), placeToInsert.getTypeString(),placeToInsert.getLat(),
-				placeToInsert.getLng());
+				placeToInsert.getName(), placeToInsert.getTypeString(),
+				placeToInsert.getLat(), placeToInsert.getLng());
 
 	}
 
@@ -51,11 +53,10 @@ public class DatabaseAccessObject {
 			if (!place.isDB()) {
 				locationId = (int) addLocation(place);
 				locationIds.add(locationId);
-			}
-			else {
+			} else {
 				locationId = (int) place.getId();
 				locationIds.add(locationId);
-				
+
 			}
 
 		}
@@ -82,8 +83,8 @@ public class DatabaseAccessObject {
 		return tripId;
 	}
 
-	public long insertLocations(String location, String name, String type, double lat,
-			double lon) {
+	public long insertLocations(String location, String name, String type,
+			double lat, double lon) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBOpenHelper.LOCATION_ADDRESS, location);
@@ -133,7 +134,7 @@ public class DatabaseAccessObject {
 	}
 
 	// Overload readAdderss(long tripId), search certain trip locations address
-	public Cursor readAddress(long tripId) {
+	public List<Location> readAddress(long tripId) {
 
 		Cursor c = mDB.query(DBOpenHelper.TABLE_MANY_TO_MANY, new String[] {
 				DBOpenHelper._ID, DBOpenHelper.LOCATION_ID },
@@ -150,9 +151,39 @@ public class DatabaseAccessObject {
 		location_ids.deleteCharAt(location_ids.length() - 1);
 		location_ids.append(")");
 
-		return mDB.query(DBOpenHelper.TABLE_LOCATIONS,
+		Cursor locationCursor = mDB.query(DBOpenHelper.TABLE_LOCATIONS,
 				DBOpenHelper.location_columns, DBOpenHelper._ID + " in "
 						+ location_ids, new String[] {}, null, null, null);
+
+		List<Location> locations = new ArrayList<Location>();
+
+		for (locationCursor.moveToFirst(); !locationCursor.isAfterLast(); locationCursor
+				.moveToNext()) {
+			locations.add(new Location(locationCursor.getLong(0),
+					locationCursor.getString(1), locationCursor.getString(2),
+					locationCursor.getString(3), locationCursor.getString(4),
+					0, 0));
+		}
+
+		return locations;
+
+	}
+
+	// Overload readAdderss(long tripId), search certain trip locations address
+	public List<Route> readRoutes(long tripId) {
+
+		Cursor routeCursor = mDB.query(DBOpenHelper.TABLE_ROUTES,
+				DBOpenHelper.route_columns, DBOpenHelper.TRIP_ID + "=?",
+				new String[] { "" + tripId }, null, null, null);
+
+		List<Route> routes = new ArrayList<Route>();
+
+		for (routeCursor.moveToFirst(); !routeCursor.isAfterLast(); routeCursor
+				.moveToNext()) {
+			routes.add(new Route(routeCursor.getLong(2),
+					routeCursor.getLong(3), routeCursor.getString(4)));
+		}
+		return routes;
 
 	}
 
@@ -170,19 +201,20 @@ public class DatabaseAccessObject {
 				new String[] {}, null, null, null);
 	}
 
-	public Cursor matchLocation(String letter){
-		/*return mDB.query(DBOpenHelper.TABLE_LOCATIONS, new String[] {
-				DBOpenHelper._ID, DBOpenHelper.LOCATION_ADDRESS,
-				DBOpenHelper.LOCATION_NAME,DBOpenHelper.LOCATION_TYPE,
-				DBOpenHelper.LOCATION_NOTES,
-				DBOpenHelper.LOCATION_LAT, DBOpenHelper.LOCATION_LON}, 
-				"name LIKE '?%'",
-				new String[] {letter}, null, null, null);*/
+	public Cursor matchLocation(String letter) {
+		/*
+		 * return mDB.query(DBOpenHelper.TABLE_LOCATIONS, new String[] {
+		 * DBOpenHelper._ID, DBOpenHelper.LOCATION_ADDRESS,
+		 * DBOpenHelper.LOCATION_NAME,DBOpenHelper.LOCATION_TYPE,
+		 * DBOpenHelper.LOCATION_NOTES, DBOpenHelper.LOCATION_LAT,
+		 * DBOpenHelper.LOCATION_LON}, "name LIKE '?%'", new String[] {letter},
+		 * null, null, null);
+		 */
 		return mDB.rawQuery("select _id, name, address, type, notes, lat, lon "
-				+ "from Locations where name LIKE ?" 
-				,new String [] {"%" + letter + "%"});
+				+ "from Locations where name LIKE ?", new String[] { "%"
+				+ letter + "%" });
 	}
-	
+
 	// Delete all records
 	public void clearAll() {
 		mDB.delete(DBOpenHelper.TABLE_TRIPS, null, null);

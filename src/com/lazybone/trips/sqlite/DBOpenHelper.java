@@ -35,6 +35,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String ROUTE_FROM = "fromLocation";
 	final static String ROUTE_TO = "toLocation";
 	final static String ROUTE_METHOD = "travelMethod";
+	public final static String[] route_columns = { _ID, ROUTE_FROM,
+		ROUTE_TO, ROUTE_METHOD};
 
 	final private static String CREATE_TRIPS =
 
