@@ -1,15 +1,19 @@
 package com.lazybone.trips.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,24 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
-
 import com.lazybone.trips.sqlite.DatabaseAccessObject;
 import com.tripplanr.R;
 
 public class New_Trip_Fragment extends Fragment {
 
-	// private SimpleCursorAdapter mAdapter;
-	// private Cursor c;
 	private PlaceArrayAdapter placeAdapter;
 	private DatabaseAccessObject dao;
 	private EditText tripNameInput;
+	private MainActivity main;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dao = new DatabaseAccessObject(getActivity());
-		//
-		// c = dao.readAddress();
 
 		setRetainInstance(true);
 	}
@@ -48,13 +48,14 @@ public class New_Trip_Fragment extends Fragment {
 		final View rootView = inflater.inflate(R.layout.new_trip, container,
 				false);
 
+		main = (MainActivity) getActivity();
+
 		String[] travelMethods = getResources().getStringArray(
 				R.array.travel_arrays);
 
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_location);
 
-		MainActivity main = (MainActivity) getActivity();
 		placeAdapter = new PlaceArrayAdapter(getActivity(), main.locationsToAdd);
 		listLocationView.setAdapter(placeAdapter);
 
@@ -64,27 +65,19 @@ public class New_Trip_Fragment extends Fragment {
 		Button addTripButton = (Button) rootView.findViewById(R.id.create_plan);
 		Spinner mySpinner = (Spinner) rootView
 				.findViewById(R.id.travel_method_spinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.spinner_travel_method, R.id.travel_method_hint,
+		TravelMethodAdapter adapter = new TravelMethodAdapter(getActivity(),
 				travelMethods);
 
 		mySpinner.setAdapter(adapter);
 
-		// listLocationView.setOnItemClickListener(new OnItemClickListener() {
-		// @SuppressWarnings("deprecation")
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		//
-		// c.moveToPosition(position);
-		//
-		// int location_id = c.getInt(0);
-		//
-		// dao.deleteLocation(location_id);
-		//
-		// mAdapter.getCursor().requery();
-		// mAdapter.notifyDataSetChanged();
-		// }
-		// });
+		listLocationView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				main.locationsToAdd.remove(position);
+
+				placeAdapter.notifyDataSetChanged();
+			}
+		});
 
 		addLocationButton.setOnClickListener(new View.OnClickListener() {
 
@@ -120,14 +113,16 @@ public class New_Trip_Fragment extends Fragment {
 				if (tripName.equals("")) {
 
 					Toast toast = Toast.makeText(getActivity(),
-							"You must provide a name for the trip!!", Toast.LENGTH_SHORT);
+							"You must provide a name for the trip!!",
+							Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 					return;
 				}
 				if (main.locationsToAdd.size() == 0) {
 					Toast toast = Toast.makeText(getActivity(),
-							"You must have at least 1 location!!!", Toast.LENGTH_SHORT);
+							"You must have at least 1 location!!!",
+							Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 					return;
@@ -166,6 +161,61 @@ public class New_Trip_Fragment extends Fragment {
 		});
 
 		return rootView;
+	}
+
+	private class TravelMethodAdapter extends ArrayAdapter<String> {
+
+		private final Context context;
+		private final String[] values;
+
+		public TravelMethodAdapter(Context context, String[] values) {
+			super(context, R.layout.spinner_travel_method, values);
+			this.context = context;
+			this.values = values;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View view = inflater.inflate(R.layout.spinner_travel_method,
+					parent, false);
+
+			TextView travelHint = (TextView) view
+					.findViewById(R.id.travel_method_hint);
+
+			String travelMethod = values[position];
+
+			Drawable icon = null;
+
+			if (travelMethod.equals("Driving")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_car);
+			} else if (travelMethod.equals("Public Transport")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_bus);
+			} else if (travelMethod.equals("Biking")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_bike);
+			} else if (travelMethod.equals("Walking")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_compas);
+			}
+
+			travelHint.setText(travelMethod);
+			travelHint.setCompoundDrawablesWithIntrinsicBounds(icon, null,
+					null, null);
+
+			return view;
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			return getView(position, convertView, parent);
+		}
+
 	}
 
 	private class PlaceArrayAdapter extends ArrayAdapter<Place> {
@@ -216,31 +266,4 @@ public class New_Trip_Fragment extends Fragment {
 		}
 
 	}
-
-	// // extend the SimpleCursorAdapter to create a custom class where we
-	// // can override the getView to change the row colors
-	// @SuppressLint("ResourceAsColor")
-	// private class MyCursorAdapter extends SimpleCursorAdapter {
-	//
-	// public MyCursorAdapter(Context context, int layout, Cursor c,
-	// String[] from, int[] to, int flags) {
-	// super(context, layout, c, from, to, flags);
-	// }
-	//
-	// @Override
-	// public View getView(int position, View convertView, ViewGroup parent) {
-	//
-	// // get reference to the row
-	// View view = super.getView(position, convertView, parent);
-	// // check for odd or even to set alternate colors to the row
-	// // background
-	// if (position % 2 == 0) {
-	// view.setBackgroundColor(getResources().getColor(R.color.even_row));
-	// } else {
-	// view.setBackgroundColor(getResources().getColor(R.color.odd_row));
-	// }
-	// return view;
-	// }
-	//
-	// }
 }
