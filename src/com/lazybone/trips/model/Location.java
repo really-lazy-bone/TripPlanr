@@ -1,13 +1,38 @@
 package com.lazybone.trips.model;
 
-public class Location {
+public class Location implements TripDetailItem {
 
+	private long id;
 	private String address;
 	private String name;
 	private String type;
 	private String notes;
 	private double lon;
 	private double lat;
+	
+	public Location() {
+		
+	}
+	
+	public Location(long id, String address, String name, String type,
+			String notes, double lon, double lat) {
+		super();
+		this.id = id;
+		this.address = address;
+		this.name = name;
+		this.type = type;
+		this.notes = notes;
+		this.lon = lon;
+		this.lat = lat;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getAddress() {
 		return address;
@@ -55,6 +80,11 @@ public class Location {
 
 	public void setLat(double lat) {
 		this.lat = lat;
+	}
+
+	@Override
+	public String getItemType() {
+		return "Location";
 	}
 
 }
