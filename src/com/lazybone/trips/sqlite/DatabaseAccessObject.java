@@ -152,7 +152,7 @@ public class DatabaseAccessObject {
 		location_ids.append(")");
 
 		Cursor locationCursor = mDB.query(DBOpenHelper.TABLE_LOCATIONS,
-				DBOpenHelper.location_columns, DBOpenHelper._ID + " in "
+				DBOpenHelper.all_location_columns, DBOpenHelper._ID + " in "
 						+ location_ids, new String[] {}, null, null, null);
 
 		List<Location> locations = new ArrayList<Location>();
@@ -180,8 +180,8 @@ public class DatabaseAccessObject {
 
 		for (routeCursor.moveToFirst(); !routeCursor.isAfterLast(); routeCursor
 				.moveToNext()) {
-			routes.add(new Route(routeCursor.getLong(2),
-					routeCursor.getLong(3), routeCursor.getString(4)));
+			routes.add(new Route(routeCursor.getLong(1),
+					routeCursor.getLong(2), routeCursor.getString(3)));
 		}
 		return routes;
 

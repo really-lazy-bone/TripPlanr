@@ -15,10 +15,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.lazybone.trips.google.places.autocomplete.Place;
 import com.lazybone.trips.model.Location;
 import com.lazybone.trips.model.Route;
 import com.lazybone.trips.model.TripDetailItem;
@@ -27,7 +25,7 @@ import com.tripplanr.R;
 
 public class Trip_Detail_Fragment extends Fragment {
 
-	private SimpleCursorAdapter mAdapter;
+	private TripDetailAdapter mAdapter;
 	private DatabaseAccessObject dao;
 
 	@Override
@@ -50,15 +48,15 @@ public class Trip_Detail_Fragment extends Fragment {
 		// get cursors
 		List<Location> locations = dao.readAddress(tripId);
 		List<Route> routes = dao.readRoutes(tripId);
-		
+
 		List<TripDetailItem> list = new ArrayList<TripDetailItem>();
-		
-		for (Location l: locations) {
+
+		for (Location l : locations) {
 			// add the location to the list
 			list.add(l);
-			
+
 			// add the route which has from location equals to the location
-			for (Route r: routes) {
+			for (Route r : routes) {
 				if (r.getFromLocationId() == l.getId()) {
 					list.add(r);
 				}
@@ -77,9 +75,7 @@ public class Trip_Detail_Fragment extends Fragment {
 		ListView listLocationView = (ListView) rootView
 				.findViewById(R.id.list_point);
 
-//		mAdapter = new SimpleCursorAdapter(getActivity(),
-//				R.layout.location_row, c, DBOpenHelper.location_columns,
-//				new int[] { 0, R.id.location_id, R.id.location_label }, 0);
+		mAdapter = new TripDetailAdapter(getActivity(), list);
 
 		listLocationView.setAdapter(mAdapter);
 
@@ -92,14 +88,14 @@ public class Trip_Detail_Fragment extends Fragment {
 
 		return rootView;
 	}
-	
+
 	private class TripDetailAdapter extends ArrayAdapter<TripDetailItem> {
 
 		private final Context context;
-		private final ArrayList<TripDetailItem> values;
+		private final List<TripDetailItem> values;
 
-		public TripDetailAdapter(Context context, ArrayList<TripDetailItem> values) {
-			super(context, R.layout.row, values);
+		public TripDetailAdapter(Context context, List<TripDetailItem> values) {
+			super(context, R.layout.trip_detail_row, values);
 			this.context = context;
 			this.values = values;
 		}
@@ -109,8 +105,46 @@ public class Trip_Detail_Fragment extends Fragment {
 
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflater.inflate(R.layout.location_row, parent, false);
-			
+			View view = inflater.inflate(R.layout.trip_detail_row, parent,
+					false);
+
+			ImageView icon = (ImageView) view.findViewById(R.id.icon);
+			TextView title = (TextView) view
+					.findViewById(R.id.trip_detail_title);
+			TextView subTitle = (TextView) view
+					.findViewById(R.id.trip_detail_subtitle);
+
+			if (values.get(position).getItemType().equals("Location")) {
+				Location location = (Location) values.get(position);
+
+				if (location.getType().contains("establishment")) {
+					icon.setImageResource(R.drawable.icon_business);
+				} else {
+					icon.setImageResource(R.drawable.icon_map_marker);
+				}
+
+				title.setText(location.getName());
+				subTitle.setText(location.getAddress());
+			} else {
+				Route route = (Route) values.get(position);
+
+				if (route.getTravelMethod().equals("Driving")) {
+					icon.setImageResource(R.drawable.icon_car);
+				} else if (route.getTravelMethod().equals("Public Transport")) {
+					icon.setImageResource(R.drawable.icon_bus);
+				} else if (route.getTravelMethod().equals("Biking")) {
+					icon.setImageResource(R.drawable.icon_bike);
+				} else {
+					icon.setImageResource(R.drawable.icon_compas);
+				}
+				
+				Location from = (Location) values.get(position-1);
+				Location to = (Location) values.get(position+1);
+				
+				title.setText(route.getTravelMethod());
+				subTitle.setText("From " + from.getName()+ " to " + to.getName());
+			}
+
 			return view;
 		}
 

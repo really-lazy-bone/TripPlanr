@@ -19,7 +19,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String TABLE_MANY_TO_MANY = "tl";
 	final static String TRIP_ID = "trip_id";
 	final static String LOCATION_ID = "location_id";
-	
 
 	final static String TABLE_LOCATIONS = "Locations";
 	final static String LOCATION_ADDRESS = "address";
@@ -30,13 +29,16 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	final static String LOCATION_LON = "lon";
 	public final static String[] location_columns = { _ID, LOCATION_NAME,
 			LOCATION_ADDRESS };
+	public final static String[] all_location_columns = { _ID,
+			LOCATION_ADDRESS, LOCATION_NAME, LOCATION_TYPE, LOCATION_NOTES,
+			LOCATION_LAT, LOCATION_LON };
 
 	final static String TABLE_ROUTES = "Routes";
 	final static String ROUTE_FROM = "fromLocation";
 	final static String ROUTE_TO = "toLocation";
 	final static String ROUTE_METHOD = "travelMethod";
-	public final static String[] route_columns = { _ID, ROUTE_FROM,
-		ROUTE_TO, ROUTE_METHOD};
+	public final static String[] route_columns = { _ID, ROUTE_FROM, ROUTE_TO,
+			ROUTE_METHOD };
 
 	final private static String CREATE_TRIPS =
 
