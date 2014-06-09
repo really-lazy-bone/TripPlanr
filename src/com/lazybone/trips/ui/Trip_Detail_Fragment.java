@@ -47,8 +47,11 @@ public class Trip_Detail_Fragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+
 		final View rootView = inflater.inflate(R.layout.trip_detail, container,
 				false);
+		
 
 		long tripId = this.getArguments().getLong("tripId");
 
@@ -74,6 +77,8 @@ public class Trip_Detail_Fragment extends Fragment {
 
 		tripCursor.moveToFirst();
 		String tripName = tripCursor.getString(1);
+
+		getActivity().getActionBar().setTitle("Trip Details");
 
 		TextView tripNameView = (TextView) rootView
 				.findViewById(R.id.name_of_trip);

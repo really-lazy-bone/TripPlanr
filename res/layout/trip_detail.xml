@@ -2,29 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/lightorange"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:background="@color/lightorange" >
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/name_of_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/icon_tag"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="@string/trip_name_hint"
+        android:singleLine="true"
+        android:textSize="24sp" >
+    </TextView>
 
    
 
-        <TextView
-            android:id="@+id/name_of_trip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_tag"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="@string/trip_name_hint"
-            android:textSize="24sp"
-            android:singleLine="true" >
-        </TextView>
-
-        <ListView
-            android:id="@+id/list_point"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_marginLeft="10dp" >
-        </ListView>
+    <ListView
+        android:id="@+id/list_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" >
+    </ListView>
 
 </LinearLayout>

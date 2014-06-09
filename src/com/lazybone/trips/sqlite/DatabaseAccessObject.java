@@ -94,7 +94,7 @@ public class DatabaseAccessObject {
 		values.put(DBOpenHelper.LOCATION_NAME, name);
 		values.put(DBOpenHelper.LOCATION_LAT, lat);
 		values.put(DBOpenHelper.LOCATION_LON, lon);
-		values.put(DBOpenHelper.LOCATION_TYPE, NLOCATION_TYPE);
+		values.put(DBOpenHelper.LOCATION_TYPE, type);
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
 
 		return mDB.insert(DBOpenHelper.TABLE_LOCATIONS, null, values);

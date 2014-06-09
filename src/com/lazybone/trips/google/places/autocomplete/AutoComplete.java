@@ -45,7 +45,7 @@ public class AutoComplete {
                 String name = c.getString(c.getColumnIndex("name"));
                 String address = c.getString(c.getColumnIndex("address"));
                 String type = c.getString(c.getColumnIndex("type"));
-                double lat = c.getColumnIndex("lax");
+                double lat = c.getColumnIndex("lat");
                 double lon = c.getColumnIndex("lon");
                 
                 Place placeToAdd = new Place(id, name, address, lat, lon, type, true);

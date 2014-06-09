@@ -7,7 +7,7 @@
     android:padding="10dp" >
  
     <TextView
-        android:id="@+id/NameDialogTextView"
+        android:id="@+id/DialogTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name of Location : "
