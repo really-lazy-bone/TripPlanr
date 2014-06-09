@@ -5,15 +5,22 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -115,7 +122,7 @@ public class Trip_Detail_Fragment extends Fragment {
 					.findViewById(R.id.trip_detail_subtitle);
 
 			if (values.get(position).getItemType().equals("Location")) {
-				Location location = (Location) values.get(position);
+				final Location location = (Location) values.get(position);
 
 				if (location.getType().contains("establishment")) {
 					icon.setImageResource(R.drawable.icon_business);
@@ -125,8 +132,27 @@ public class Trip_Detail_Fragment extends Fragment {
 
 				title.setText(location.getName());
 				subTitle.setText(location.getAddress());
+
+				Button streetViewButton = (Button) view
+						.findViewById(R.id.location_streetView);
+				streetViewButton.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(
+								android.content.Intent.ACTION_VIEW,
+								Uri.parse("http://maps.google.com/maps?q="+location.getAddress()));
+						startActivity(intent);
+
+					}
+				});
+
+				// hide navigation button
+				view.findViewById(R.id.route_navigation).setVisibility(
+						View.GONE);
 			} else {
-				Route route = (Route) values.get(position);
+
+				final Route route = (Route) values.get(position);
 
 				if (route.getTravelMethod().equals("Driving")) {
 					icon.setImageResource(R.drawable.icon_car);
@@ -137,12 +163,52 @@ public class Trip_Detail_Fragment extends Fragment {
 				} else {
 					icon.setImageResource(R.drawable.icon_compas);
 				}
-				
-				Location from = (Location) values.get(position-1);
-				Location to = (Location) values.get(position+1);
-				
+				final Location from = (Location) values.get(position - 1);
+				final Location to = (Location) values.get(position + 1);
+
 				title.setText(route.getTravelMethod());
-				subTitle.setText("From " + from.getName()+ " to " + to.getName());
+				subTitle.setText("From " + from.getName() + " to "
+						+ to.getName());
+
+				Button navigationButton = (Button) view
+						.findViewById(R.id.route_navigation);
+				navigationButton.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						String travelMethod = "";
+						if (route.getTravelMethod().equals("Driving")) {
+							travelMethod = "d";
+						} else if (route.getTravelMethod().equals(
+								"Public Transport")) {
+							travelMethod = "r";
+						} else if (route.getTravelMethod().equals("Biking")) {
+							travelMethod = "b";
+						} else {
+							travelMethod = "w";
+						}
+						Intent intent = new Intent(
+								android.content.Intent.ACTION_VIEW,
+								Uri.parse("http://maps.google.com/maps?saddr="
+										+ from.getAddress() + "&daddr="
+										+ to.getAddress() + "&dirflg="
+										+ travelMethod));
+						startActivity(intent);
+
+					}
+				});
+
+				// hide streetView button
+				view.findViewById(R.id.location_streetView).setVisibility(
+						View.GONE);
+
+				// row with extra buttons height should be wrap_content instead
+				// of preferred row height
+				LinearLayout navigation = (LinearLayout) view
+						.findViewById(R.id.trip_detail_layout);
+				navigation.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+
 			}
 
 			return view;

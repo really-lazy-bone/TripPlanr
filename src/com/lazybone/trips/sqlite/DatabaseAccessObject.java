@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.lazybone.trips.google.places.autocomplete.Place;
 import com.lazybone.trips.model.Location;
@@ -86,9 +87,13 @@ public class DatabaseAccessObject {
 	public long insertLocations(String location, String name, String type,
 			double lat, double lon) {
 		ContentValues values = new ContentValues();
+		Log.d("dbInsertLat", lat+"");
+		Log.d("dbInsertLon", lon+"");
 
 		values.put(DBOpenHelper.LOCATION_ADDRESS, location);
 		values.put(DBOpenHelper.LOCATION_NAME, name);
+		values.put(DBOpenHelper.LOCATION_LAT, lat);
+		values.put(DBOpenHelper.LOCATION_LON, lon);
 		values.put(DBOpenHelper.LOCATION_TYPE, NLOCATION_TYPE);
 		values.put(DBOpenHelper.LOCATION_NOTES, NLOCATION_NOTES);
 
@@ -162,7 +167,7 @@ public class DatabaseAccessObject {
 			locations.add(new Location(locationCursor.getLong(0),
 					locationCursor.getString(1), locationCursor.getString(2),
 					locationCursor.getString(3), locationCursor.getString(4),
-					0, 0));
+					locationCursor.getDouble(5), locationCursor.getDouble(6)));
 		}
 
 		return locations;

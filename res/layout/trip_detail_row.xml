@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trip_detail_layout"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:padding="6dip" >
 
     <ImageView
-        android:contentDescription="@string/location_icon_content"
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="6dip"
         android:layout_gravity="center_vertical|left"
+        android:layout_marginRight="6dip"
+        android:contentDescription="@string/location_icon_content"
         android:src="@drawable/ic_launcher" />
 
-     <LinearLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/trip_detail_title"
@@ -31,12 +32,28 @@
             android:id="@+id/trip_detail_subtitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@+id/label"
-            android:textSize="12sp"
-            android:lines="1"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/lightgrey" >
+            android:lines="1"
+            android:text="@+id/label"
+            android:textColor="@color/lightgrey"
+            android:textSize="12sp" >
         </TextView>
+          <Button
+            android:id="@+id/route_navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="Directions" />
+
+        <Button
+            android:id="@+id/location_streetView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="Open In Goolge Maps" />
     </LinearLayout>
-    
+ 
+      
+
+
 </LinearLayout>

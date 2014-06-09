@@ -159,8 +159,7 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 
 	public void AddLocationToTrip(){
 		
-		if (selectedPlace.getTypes().contains("establishment")
-				||!selectedPlace.getTypes().contains("street_address")) {
+		if (selectedPlace.getTypes().contains("establishment")) {
 			// addLocation(selectedPlace.getTerms().get(0), address,
 			// lat,
 			// lon);
@@ -276,6 +275,7 @@ inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowTo
 				selectedPlace.setFormattedAddress(address);
 				selectedPlace.setLat(lat);
 				selectedPlace.setLng(lon);
+				
 				
 				AddLocationToTrip();
 				
