@@ -4,8 +4,10 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.tripplanr.R;
 
@@ -98,6 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
 			Bundle savedInstanceState) {
 		mDrawerListView = (ListView) inflater.inflate(
 				R.layout.fragment_navigation_drawer, container, false);
+
 		mDrawerListView
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
@@ -106,15 +110,61 @@ public class NavigationDrawerFragment extends Fragment {
 						selectItem(position);
 					}
 				});
-		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
-				.getThemedContext(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, new String[] {
+		mDrawerListView.setAdapter(new NavigationMenuAdpapter(getActionBar()
+				.getThemedContext(), new String[] {
 						getString(R.string.title_section1),
-						getString(R.string.title_section2),
-						getString(R.string.title_section3), }));
+						getString(R.string.title_section2), }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		return mDrawerListView;
+	}
+	
+	private class NavigationMenuAdpapter extends ArrayAdapter<String> {
+
+		private final Context context;
+		private final String[] values;
+
+		public NavigationMenuAdpapter(Context context, String[] values) {
+			super(context, R.layout.list_text_color, values);
+			this.context = context;
+			this.values = values;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View view = inflater.inflate(R.layout.list_text_color,
+					parent, false);
+
+			TextView menuContent = (TextView) view
+					.findViewById(R.id.list_content);
+
+			String travelMethod = values[position];
+
+			Drawable icon = null;
+
+			if (travelMethod.equals("New Trip")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_plus);
+			} else if (travelMethod.equals("Trips")) {
+				icon = getContext().getResources().getDrawable(
+						R.drawable.icon_search);
+			}
+
+			menuContent.setText(travelMethod);
+			menuContent.setCompoundDrawablesWithIntrinsicBounds(icon, null,
+					null, null);
+
+			return view;
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			return getView(position, convertView, parent);
+		}
+
 	}
 
 	public boolean isDrawerOpen() {

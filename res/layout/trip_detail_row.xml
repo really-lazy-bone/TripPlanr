@@ -15,7 +15,7 @@
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
         android:orientation="vertical" >
@@ -33,27 +33,30 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:lines="1"
             android:text="@+id/label"
             android:textColor="@color/lightgrey"
             android:textSize="12sp" >
         </TextView>
-          <Button
+
+        <Button
             android:id="@+id/route_navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
-            android:text="Directions" />
+            android:layout_gravity="right"
+            android:padding="4dp"
+            android:text="Directions in Google Maps"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/location_streetView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
-            android:text="Open In Goolge Maps" />
+            android:layout_gravity="right"
+            android:padding="4dp"
+            android:text="Open In Goolge Maps"
+            android:textSize="12sp" />
     </LinearLayout>
- 
-      
-
 
 </LinearLayout>

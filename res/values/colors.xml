@@ -3,10 +3,10 @@
     <color name="action_bar_background_start">#FFD494</color>
     <color name="action_bar_background_end">#FFDDA9</color>
 
-    <color name="main_background">#FFD494</color>
+    <color name="main_background">#eeeeee</color>
     <color name="lightorange">#FFD494</color>
     <color name="lightgrey">#999999</color>
-    
+
     <color name="odd_row">#80ffffff</color>
     <color name="even_row">#60cccccc</color>
 </resources>

@@ -20,7 +20,6 @@ public class DatabaseAccessObject {
 
 	private Integer NTRIP_TIME = 1000;
 
-	private String NLOCATION_TYPE = "default";
 	private String NLOCATION_NOTES = "test notes";
 
 	public DatabaseAccessObject() {

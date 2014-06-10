@@ -3,7 +3,7 @@
     android:id="@+id/new_trip_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/lightorange"
+    android:background="@color/main_background"
     android:orientation="vertical"
     android:padding="20dp" >
 
@@ -19,7 +19,8 @@
         android:inputType="text"
         android:padding="10dp"
         android:singleLine="true"
-        android:textSize="20sp" >
+        android:textSize="20sp"
+        android:background="@drawable/textview_background">
     </EditText>
 
     <ListView
@@ -28,7 +29,8 @@
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="80" >
+        android:layout_weight="80"
+        android:background="@drawable/textview_background" >
     </ListView>
 
     <Button
@@ -44,11 +46,14 @@
 
     <LinearLayout
         android:id="@+id/travel_selection"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:gravity="center" >
+        android:gravity="center"
+        android:background="@drawable/textview_background"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
 
         <TextView
             android:id="@+id/travel_text_view"
