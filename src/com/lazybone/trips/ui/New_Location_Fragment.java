@@ -82,6 +82,17 @@ public class New_Location_Fragment extends Fragment {
 			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
+
+				if (selectedPlace == null) {
+
+					Toast toast = Toast.makeText(getActivity(),
+							"Select an item from the dropdown", 5);
+					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.show();
+					return;
+
+				}
+
 				if (!selectedPlace.isDB()) {
 					// not connected
 					if (NetworkUtil.getConnectivityStatus(getActivity()) == 0) {
@@ -92,16 +103,7 @@ public class New_Location_Fragment extends Fragment {
 						toast.show();
 						return;
 					}
-				} else if (selectedPlace == null) {
-
-					Toast toast = Toast.makeText(getActivity(),
-							"Select an item from the dropdown", 5);
-					toast.setGravity(Gravity.TOP, 0, 0);
-					toast.show();
-					return;
-
 				}
-
 				if (!selectedPlace.isDB()) {
 					StringBuilder sb = new StringBuilder(PLACES_API_BASE
 							+ TYPE_DETAIL + OUT_JSON);
@@ -157,10 +159,9 @@ public class New_Location_Fragment extends Fragment {
 	}
 
 	public void AddLocationToTrip() {
-		
-		if(selectedPlace.isDB())
-		{
-		
+
+		if (selectedPlace.isDB()) {
+
 			MainActivity main = (MainActivity) getActivity();
 
 			main.locationsToAdd.add(selectedPlace);
@@ -240,6 +241,7 @@ public class New_Location_Fragment extends Fragment {
 			// show it
 			alertDialog.show();
 		}
+		selectedPlace = null;
 	}
 
 	private class PlacesDetailTask extends AsyncTask<URL, Integer, JSONObject> {
@@ -318,24 +320,20 @@ public class New_Location_Fragment extends Fragment {
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 			Place place = resultList.get(position);
 
-			if(place.isDB())
-			{
+			if (place.isDB()) {
 				imageView.setImageResource(R.drawable.icon_userlocation);
 
-			}
-			else if (place.getTypes().contains("establishment")) {
+			} else if (place.getTypes().contains("establishment")) {
 				imageView.setImageResource(R.drawable.icon_business);
 
 			} else {
 				imageView.setImageResource(R.drawable.icon_map_marker);
 			}
-			if(place.isDB())
-			{
+			if (place.isDB()) {
 				firstLine.setVisibility(View.GONE);
 				secondLine.setText(place.getName());
-				
-			}
-			else if (place.getTypes().contains("establishment")) {
+
+			} else if (place.getTypes().contains("establishment")) {
 				firstLine.setText(place.getTerms().get(0));
 				StringBuilder address = new StringBuilder();
 				ArrayList<String> terms = place.getTerms();
