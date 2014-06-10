@@ -329,7 +329,13 @@ public class New_Location_Fragment extends Fragment {
 			} else {
 				imageView.setImageResource(R.drawable.icon_map_marker);
 			}
-			if (place.getTypes().contains("establishment")) {
+			if(place.isDB())
+			{
+				firstLine.setVisibility(View.GONE);
+				secondLine.setText(place.getName());
+				
+			}
+			else if (place.getTypes().contains("establishment")) {
 				firstLine.setText(place.getTerms().get(0));
 				StringBuilder address = new StringBuilder();
 				ArrayList<String> terms = place.getTerms();

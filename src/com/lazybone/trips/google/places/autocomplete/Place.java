@@ -32,7 +32,8 @@ public class Place {
 	public Place(long id, String name, String address, double lat, double lon, 
 			String type, boolean isDB){
 		this.id = id;
-		this.description = name;
+		this.name = name;
+		this.description=name;
 		this.formattedAddress = address;
 		this.lat = lat;
 		this.lng = lon;

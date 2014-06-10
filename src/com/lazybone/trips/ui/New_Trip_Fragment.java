@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,6 +249,7 @@ public class New_Trip_Fragment extends Fragment {
 				imageView.setImageResource(R.drawable.icon_map_marker);
 			}
 
+			
 			name.setText(values.get(position).getName());
 			address.setText(values.get(position).getFormattedAddress());
 
