@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/lightorange" >
+    android:background="@color/main_background" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -14,7 +14,8 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/google" />
+            android:src="@drawable/google"
+            android:layout_gravity="right" />
 
         <AutoCompleteTextView
             android:id="@+id/new_location_name"
@@ -26,7 +27,11 @@
             android:hint="@string/new_location_hint"
             android:inputType="text"
             android:dropDownHeight="250dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/textview_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/confirm_add_location"

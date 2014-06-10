@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/lightorange" >
+    android:background="@color/main_background" >
 
     <ListView
         android:id="@+id/list_trips"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp" >
+        android:layout_margin="8dp"
+        android:padding="8dp" >
     </ListView>
 
 </LinearLayout>

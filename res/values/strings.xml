@@ -2,9 +2,8 @@
 <resources>
 
     <string name="app_name">TripPlnr</string>
-    <string name="title_section1">Create New Trip</string>
-    <string name="title_section2">Upcoming Trips</string>
-    <string name="title_section3">Past Trips</string>
+    <string name="title_section1">New Trip</string>
+    <string name="title_section2">Trips</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -14,7 +13,7 @@
     <string name="new_location_hint">New Location</string>
     <string name="add_location_hint">Add Location</string>
     <string name="create_plan_hint">Create Plan</string>
-    <string name="travel_method_text">Default Travel Method</string>
+    <string name="travel_method_text">Travel Method</string>
     
     <string name="location_icon_content">Location Icon</string>
     
