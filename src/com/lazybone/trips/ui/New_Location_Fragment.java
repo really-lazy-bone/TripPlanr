@@ -165,6 +165,7 @@ public class New_Location_Fragment extends Fragment {
 			MainActivity main = (MainActivity) getActivity();
 
 			main.locationsToAdd.add(selectedPlace);
+			selectedPlace = null;
 
 			getActivity().getActionBar().setTitle("Create New Trip");
 
@@ -183,6 +184,8 @@ public class New_Location_Fragment extends Fragment {
 			MainActivity main = (MainActivity) getActivity();
 
 			main.locationsToAdd.add(selectedPlace);
+			selectedPlace = null;
+
 
 			getActivity().getActionBar().setTitle("Create New Trip");
 
@@ -219,6 +222,8 @@ public class New_Location_Fragment extends Fragment {
 									MainActivity main = (MainActivity) getActivity();
 
 									main.locationsToAdd.add(selectedPlace);
+									selectedPlace = null;
+
 
 									getActivity().getActionBar().setTitle(
 											"Create New Trip");
@@ -241,7 +246,6 @@ public class New_Location_Fragment extends Fragment {
 			// show it
 			alertDialog.show();
 		}
-		selectedPlace = null;
 	}
 
 	private class PlacesDetailTask extends AsyncTask<URL, Integer, JSONObject> {
